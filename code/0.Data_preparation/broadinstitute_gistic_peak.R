@@ -78,8 +78,6 @@ Gistic2RSE <- function(ctype=c("LGG", "GBM", "GBMLGG"), peak=c("wide", "narrow",
     return(gisticSE)
 }
 
-# file.path <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource'
-file.path <- 'E:/CopyNumberClonalityProject/Section3/Resources'
+file.path <- '/data/OriginalData/'
 gbmlgg.gistic.peak <- Gistic2RSE(ctype='GBMLGG', peak = 'wide', outdir = file.path)
-# saveRDS(gbmlgg.gistic.peak, file = '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/gbmlgg_gistic_peak.rds')
-saveRDS(gbmlgg.gistic.peak, file = 'E:/CopyNumberClonalityProject/Section3/Resources/gbmlgg_gistic_peak.rds')
+saveRDS(gbmlgg.gistic.peak, file = '/data/OriginalData/gbmlgg_gistic_peak.rds')
