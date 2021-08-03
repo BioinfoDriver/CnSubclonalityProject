@@ -1,32 +1,29 @@
 
-# RNA_SEQ expression FPKM
-# setwd('/pub5/xiaoyun/Jobs/J22/EvoClass2.0/Revise/de_expression/FPKM')
-# samples <- read.csv(file = 'gdc_sample_sheet.2020-07-22.tsv', sep = '\t', header = TRUE, stringsAsFactors = FALSE)
-# samples$filename <- paste(samples$File.ID, samples$File.Name, sep = "/")
-# samples <- subset(samples, Sample.Type == 'Primary Tumor')
-# samples <- samples[!duplicated(samples$Case.ID), ]
+# TMM (Trimmed Mean of M-values)
+gene.exp <- readRDS(file='/data/pan_gli_exp_count.rds')
 
-# library(edgeR)
-# fpkm <- readDGE(samples$filename, columns=c(1, 2))
-# colnames(fpkm) <- samples$Case.ID
-# saveRDS(fpkm, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources/pan_gli_exp_fpkm.rds')
+library(edgeR)
+gene.exp <- DGEList(counts=counts(gene.exp))
+# normalize for library size by cacluating scaling factor using TMM (default method)
+gene.exp <- calcNormFactors(gene.exp)
 
-gene.exp <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources/pan_gli_exp_tmm.rds')
+# count per million read (normalized count)
+gene.exp <- cpm(gene.exp)
+colnames(gene.exp) <- substr(colnames(gene.exp), 1, 15)
+
 
 # Tumor proliferating gene
-setwd('/pub5/xiaoyun/Jobs/J22/EvoClass2.0/Section4/Results/Proliferating')
-pcna.sig <- read.csv(file = 'PCNA_Signature.txt', header = TRUE,sep = '\t',stringsAsFactors =FALSE)
+pcna.sig <- read.csv(file = '/data/PCNA_Signature.txt', header = TRUE,sep = '\t',stringsAsFactors =FALSE)
 
 library('Homo.sapiens')
 pcna.sig <- select(Homo.sapiens, keys = pcna.sig$Entrez.ID, 
 	columns = c("GENENAME", "SYMBOL", "ENSEMBL"), keytype='ENTREZID')
 
 ######## clonal rtk alt Vs subclonal rtk alt
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources')
-rtks <- read.csv(file='RTKs.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
+rtks <- read.csv(file='/data/RTKs.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
 
-gold.set <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
-gene.het <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources/gene.het.rds')
+gold.set <- readRDS('/data/gold_set.rds')
+gene.het <- readRDS(file='/data/gene.het.rds')
 gene.het <- gene.het[, paste(gold.set, '01', sep = '-')]
 
 RtkCliMolAnalysis <- function(het.mat, rtk, group.index){
@@ -64,22 +61,21 @@ rtk.alt.sam <- rtk.alt.sam[colnames(rtk.gene.exp), , FALSE]
 rownames(rtk.gene.exp) <- substr(rownames(rtk.gene.exp), 1, 15)
 
 # proliferating score——median score
-pcna.gene.exp <- rtk.gene.exp[intersect(pcna.sig$ENSEMBL, rownames(rtk.gene.exp)), ]
-pcna.median.score <- apply(pcna.gene.exp, 2, median)	
-rtk.alt.sam$pcna.median.score <- pcna.median.score[rownames(rtk.alt.sam)]
+# pcna.gene.exp <- rtk.gene.exp[intersect(pcna.sig$ENSEMBL, rownames(rtk.gene.exp)), ]
+# pcna.median.score <- apply(pcna.gene.exp, 2, median)	
+# rtk.alt.sam$pcna.median.score <- pcna.median.score[rownames(rtk.alt.sam)]
 
 
 #  proliferating score——GSVA score
 # procoding genes
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources')
-gene.info <- read.csv(file='gene_with_protein_product.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
+gene.info <- read.csv(file='/data/gene_with_protein_product.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
 gene.info <- gene.info[, c('hgnc_id', 'ensembl_gene_id')]
 
 all.gene.exp <- rtk.gene.exp[intersect(rownames(rtk.gene.exp), gene.info$ensembl_gene_id), ]
 library(GSVA)
-pcna.gsva.score <- gsva(expr=all.gene.exp, 
- gset.idx.list=list(pcna=intersect(pcna.sig$ENSEMBL, rownames(all.gene.exp))), method="gsva")
-rtk.alt.sam$pcna.gsva.score <- pcna.gsva.score[, rownames(rtk.alt.sam)]
+# pcna.gsva.score <- gsva(expr=all.gene.exp, 
+#  gset.idx.list=list(pcna=intersect(pcna.sig$ENSEMBL, rownames(all.gene.exp))), method="gsva")
+# rtk.alt.sam$pcna.gsva.score <- pcna.gsva.score[, rownames(rtk.alt.sam)]
 
 pcna.ssgsea.score <- gsva(expr=all.gene.exp, 
  gset.idx.list=list(pcna=intersect(pcna.sig$ENSEMBL, rownames(all.gene.exp))), method="ssgsea")
@@ -87,25 +83,22 @@ rtk.alt.sam$pcna.ssgsea.score <- pcna.ssgsea.score[, rownames(rtk.alt.sam)]
 
 
 ######### Tumor proliferating score compare
-tcga.cli.data <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
+tcga.cli.data <- readRDS('/data/tcga_glioma_cli_mol.rds')
 idhwt.gbm <- subset(tcga.cli.data, histological_grade %in% c('G4') & 
  IDH_CODEL_SUBTYPE %in% c('IDHwt'))$bcr_patient_barcode
 idhwt.gbm <- intersect(paste0(idhwt.gbm, '-01'), rownames(rtk.alt.sam))
 
-wilcox.test(pcna.median.score~group, rtk.alt.sam[idhwt.gbm, ], alternative = 'two.sided')$p.value # 0.04407467
 wilcox.test(pcna.ssgsea.score~group, rtk.alt.sam[idhwt.gbm, ], alternative = 'two.sided')$p.value # 0.03344954
-wilcox.test(pcna.gsva.score~group, rtk.alt.sam[idhwt.gbm, ], alternative = 'two.sided')$p.value # 0.08611389
 
 
 # plot 
 library('ggplot2')
-pcna.score.plot <- ggplot(data = rtk.alt.sam[idhwt.gbm, ], aes(group, pcna.median.score)) +
+pcna.score.plot <- ggplot(data = rtk.alt.sam[idhwt.gbm, ], aes(group, pcna.ssgsea.score)) +
  geom_boxplot(aes(fill = group), outlier.shape = NA) + geom_jitter(shape=16, position=position_jitter(0.2)) + 
  xlab('RTKs subtype') + ylab('Proliferating index') + guides(fill = guide_legend(title= 'RTKs subtype')) + 
  theme(axis.text.x = element_text(angle=30, vjust=0.5)) + stat_compare_means(label.x.npc = 'left', label.y.npc = 'top')
 
-ggsave(filename='rtk_median_score_com.pdf', plot=pcna.score.plot, 
- path='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Results/RTKProliferation')
+ggsave(filename='rtk_ssgsea_score_com.pdf', plot=pcna.score.plot, path='/result/Section4')
 
 
 
