@@ -1,8 +1,8 @@
 # load data
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 
 # Cox
-source('/pub5/xiaoyun/Jobs/J22/EvoClass2.0/Section3/RScripts/Cox.function.R')
+source('/code/Function/Cox.function.R')
 
 SCNAsBurdenSurCox <- function(sur.dat, feacs, subtype, grade){
  sur.dat <- subset(sur.dat, IDH_CODEL_SUBTYPE %in% subtype & histological_grade %in% grade)
@@ -90,7 +90,7 @@ Forestplot <- function(cox.result){
 features <- c('clo_genome_frac')
 multi.cox.res <- SCNAsBurdenSurCox(gli.cn.alt.frac, features, 'IDHmut-non-codel', c('G2', 'G3', 'G4'))
 
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section1/Results/Survival')
+setwd('/result/Section3')
 ggsave(plot = ggarrange(plotlist=lapply(multi.cox.res[[1]], Forestplot), ncol=2, nrow=2), 
  filename='non_codel_g234_forestplot.pdf')
 
