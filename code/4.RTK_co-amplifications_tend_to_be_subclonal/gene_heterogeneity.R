@@ -1,7 +1,6 @@
 
 ############################################HGNC protein-coding gene
-setwd('E:/CopyNumberClonalityProject/Section3/Resources')
-gene.info <- read.csv(file='gene_with_protein_product.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
+gene.info <- read.csv(file='/data/gene_with_protein_product.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
 gene.info <- gene.info[, c('hgnc_id', 'symbol', 'name', 'location', 'alias_symbol', 
  'gene_family', 'gene_family_id', 'entrez_id', 'ensembl_gene_id')]
 gene.info$hgnc_id  <- gsub(pattern='HGNC:', replacement='', gene.info$hgnc_id)
@@ -23,7 +22,7 @@ gene.region <- makeGRangesFromDataFrame(df=gene.region, keep.extra.columns=TRUE,
  seqnames.field="chromosome_name", start.field="start", end.field="end", strand.field="strand", starts.in.df.are.0based=FALSE)
 
 
-saveRDS(gene.region, file='E:/CopyNumberClonalityProject/Section3/Resources/gene.region.rds')
+saveRDS(gene.region, file='/data/gene.region.rds')
 
 
 ############################################
@@ -66,8 +65,8 @@ QueryGisticSubAlt <- function(ra, query,
     return(qa)
 }
 
-abs.seg.call <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_seg_call_grl.rds')
-gene.region <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources/gene.region.rds')
+abs.seg.call <- readRDS(file='/data/tcga_gli_seg_call_grl.rds')
+gene.region <- readRDS(file='/data/gene.region.rds')
 
 ra <- GetMatchedAbsoluteCalls(abs.seg.call)
 wround.gene.subcl <- QueryGisticSubAlt(ra, query=gene.region, sum.label='score', sum.method="wmean")
@@ -84,9 +83,9 @@ QualitativeGisticAlt <- function(alt, ploi){
 		alt.vec <- alt[, samp]
 		wildtype.index.1 <- which(is.na(alt.vec))
 		
-		amp.index <- which(alt.vec >= round(ploi[samp, 'ploidy']) + 1.5)
-		del.index <- which(alt.vec <= round(ploi[samp, 'ploidy']) - 1.5)
-		wildtype.index.2 <- which((alt.vec > round(ploi[samp, 'ploidy']) - 1.5) & (alt.vec < (ploi[samp, 'ploidy']) + 1.5))
+		amp.index <- which(alt.vec >= round(ploi[samp, 'ploidy']) + 2)
+		del.index <- which(alt.vec <= round(ploi[samp, 'ploidy']) - 2)
+		wildtype.index.2 <- which((alt.vec > round(ploi[samp, 'ploidy']) - 2) & (alt.vec < (ploi[samp, 'ploidy']) + 2))
 	
 		alt.vec[wildtype.index.1] <- 0
 		alt.vec[wildtype.index.2] <- 0
@@ -99,7 +98,7 @@ QualitativeGisticAlt <- function(alt, ploi){
 }
 
 
-abs.puri.ploi <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_puri_ploi.rds')
+abs.puri.ploi <- readRDS(file='/data/tcga_gli_puri_ploi.rds')
 wround.gene.alt <- QualitativeGisticAlt(wround.gene.alt, abs.puri.ploi)
 
 rownames(wround.gene.alt) <- rownames(wround.gene.subcl) <- gene.region$hgnc_symbol
@@ -133,14 +132,7 @@ GisticHetPeak <- function(subcl, alt)
 
 gene.het <- GisticHetPeak(wround.gene.subcl, wround.gene.alt)
 
-saveRDS(gene.het, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources/gene.het.6.0.rds')
-
-# gene.het.rds, Amp >= ploi[samp, 'ploidy'] + 2; Del <= ploi[samp, 'ploidy'] - 2
-# gene.het.2.0.rds, Amp >= ploi[samp, 'ploidy'] + 1; Del <= ploi[samp, 'ploidy'] - 1
-# gene.het.3.0.rds, Amp >= ploi[samp, 'ploidy'] + 1.5; Del <= ploi[samp, 'ploidy'] - 1.5
-# gene.het.4.0.rds, Amp >= round(ploi[samp, 'ploidy']) + 1; Del <= round(ploi[samp, 'ploidy']) + 1
-# gene.het.5.0.rds, Amp >= round(ploi[samp, 'ploidy']) + 2; Del <= round(ploi[samp, 'ploidy']) + 2
-# gene.het.6.0.rds, Amp >= round(ploi[samp, 'ploidy']) + 1.5; Del <= round(ploi[samp, 'ploidy']) + 1.5
+saveRDS(gene.het, file='/data/gene.het.rds')
 
 
 
