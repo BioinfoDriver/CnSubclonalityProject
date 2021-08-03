@@ -127,7 +127,7 @@ cindex.plot <- ggplot(data=cindex.res, aes(models, cindex)) + geom_bar(aes(fill=
  geom_errorbar(aes(ymax=ci_high, ymin=ci_low), width=0.2) + facet_grid(. ~ sur_type) + 
  theme(axis.text.x = element_text(angle = 30, hjust = 1), legend.position="none")
 
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section1/Results/Survival')
+setwd('/result/Section3')
 ggsave(cindex.plot, file='non_codel_g234_cindex.pdf')
 
 
