@@ -1,6 +1,6 @@
 
 # load clinical characteristics
-setwd('/pub5/xiaoyun/Jobs/J22/EvoClass2.0/OriginalData/PanCanAtlas')
+setwd('/data/OriginalData/')
 pan.can.cli.data <- read.csv("clinical_PANCAN_patient_with_followup.tsv", header=TRUE, stringsAsFactors=FALSE, 
  sep='\t', na.strings = c("", "[Not Available]", "[Not Applicable]", '[Unknown]', 
  '[Discrepancy]', '[Not Evaluated]', 'Not listed in Medical Record'))
@@ -14,7 +14,6 @@ pan.glio.cli.data <- pan.glio.cli.data[, c("bcr_patient_barcode", analyzed.cli.f
 
 
 # load clinical characteristics-(extent of surgical resection)
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/OriginalData/GDC')
 sample <- read.csv("sample.tsv", header=TRUE, stringsAsFactors=FALSE, sep='\t')
 
 gbm.esr.data <- read.csv("nationwidechildrens.org_ssf_tumor_samples_gbm.txt", header=TRUE, stringsAsFactors=FALSE, 
@@ -32,7 +31,6 @@ pan.glio.esr.data <- subset(pan.glio.esr.data, substr(sample_submitter_id, 14, 1
 pan.glio.esr.data <- pan.glio.esr.data[, -c(2, 4)]
 
 # load molecular features
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/OriginalData/cBioPortal')
 pan.glio.mol.data <- read.csv(file='data_clinical_sample.txt', sep='\t', header=TRUE, comment.char="#", 
  stringsAsFactors=FALSE, na.strings = "NA")
 
@@ -45,7 +43,7 @@ pan.glio.mol.data <- pan.glio.mol.data[, c("PATIENT_ID", analyzed.mol.fea)]
 
 
 # load cinical prognostic data
-pan.can.pro.data <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/tcga_cli_data.rds') 
+pan.can.pro.data <- readRDS(file='/data/tcga_cli_data.rds') 
 pan.glio.pro.data <- subset(pan.can.pro.data, cancer_type %in% c('GBM', 'LGG')) # In total, 1111 samples(GBM: 596; LGG: 515)  
 pan.glio.pro.data <- pan.glio.pro.data[, -c(5:6)]
 
@@ -77,5 +75,5 @@ pan.glio.cli.mol.data$molecular_histological_type <- sapply(seq(nrow(pan.glio.cl
 
 pan.glio.cli.mol.data <- pan.glio.cli.mol.data[, c(1, 20:22, 24, 23, 34, 33, 2:6, 25:32, 7:19)]
 rownames(pan.glio.cli.mol.data) <- pan.glio.cli.mol.data$bcr_patient_barcode
-saveRDS(pan.glio.cli.mol.data, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
+saveRDS(pan.glio.cli.mol.data, file='/data/tcga_glioma_cli_mol.rds')
 
