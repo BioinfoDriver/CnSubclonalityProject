@@ -12,9 +12,9 @@ ReadPurityPloidy <- function(infile)
     return(dat)
 }
 
-in.file <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_purity_ploidy.txt'
+in.file <- '/data/tcga_glioma_purity_ploidy.txt'
 gli.puri.ploi <- ReadPurityPloidy(infile=in.file)
-saveRDS(gli.puri.ploi, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_puri_ploi.rds')
+saveRDS(gli.puri.ploi, file='/data/tcga_gli_puri_ploi.rds')
 
 
 ### processing raw data
@@ -51,10 +51,9 @@ ReadAbsolute <- function(infile, ploi)
 	return(grl)	
 }
 
-gli.puri.ploi <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_puri_ploi.rds')
+gli.puri.ploi <- readRDS('/data/tcga_gli_puri_ploi.rds')
 
-in.file <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/tcga_glioma_abs_seg.txt'
+in.file <- '/data/tcga_glioma_abs_seg.txt'
 
 gli.seg.call.grl <- ReadAbsolute(infile=in.file, ploi=gli.puri.ploi)
-saveRDS(gli.seg.call.grl, 
- file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_seg_call_grl.rds')
+saveRDS(gli.seg.call.grl, file='/data/tcga_gli_seg_call_grl.rds')
