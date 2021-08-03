@@ -1,16 +1,16 @@
 
 # load data
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 
 # ABSOLUTE-based tumour purity
-abs.puri.ploi <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_puri_ploi.rds')
+abs.puri.ploi <- readRDS('/data/tcga_gli_puri_ploi.rds')
 abs.puri.ploi <- subset(abs.puri.ploi, purity>=0.65)
 
 gli.cn.alt.frac <- gli.cn.alt.frac[rownames(abs.puri.ploi), ]
 
 
 # Cox
-source('/pub5/xiaoyun/Jobs/J22/EvoClass2.0/Section3/RScripts/Cox.function.R')
+source('/code/Function/Cox.function.R')
 
 SCNAsBurdenSurAnalysis <- function(sur.dat, feacs, subtype, grade, disperse=FALSE){
  
@@ -76,7 +76,7 @@ gbm.wt.cox <- SCNAsBurdenSurAnalysis(gli.cn.alt.frac, features, 'IDHwt', c('G4')
 
 
 # save
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section1/Results/Survival')
+setwd('/result/Section3/')
 
 SCNAs.burden.cox <- do.call(rbind, list(non.codel.cox, lgg.non.codel.cox, 
  gbm.non.codel.cox, wt.cox, lgg.wt.cox, gbm.wt.cox))
