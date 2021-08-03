@@ -57,13 +57,13 @@ CNAltFraction <- function(infile, ploi)
 	return(sub.genome.stat)
 }
 
-gli.puri.ploi <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_puri_ploi.rds')
-in.file <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_abs_seg.txt'
+gli.puri.ploi <- readRDS(file='/data/tcga_gli_puri_ploi.rds')
+in.file <- '/data/tcga_glioma_abs_seg.txt'
 gli.cn.alt.frac <- CNAltFraction(infile=in.file, ploi=gli.puri.ploi)
 
 
 # 2 samples without SCNAs, and 3 samples with extreme SCNAs (>90%) thus were excluded
 gli.cn.alt.frac <- subset(gli.cn.alt.frac, !(non_neutral_genome_frac > 0.9 | non_neutral_genome_frac == 0))
-saveRDS(gli.cn.alt.frac, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_cn_alt_frac.rds') 
+saveRDS(gli.cn.alt.frac, file='/data/tcga_gli_cn_alt_frac.rds') 
 
 
