@@ -1,5 +1,5 @@
 # load data
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 
 library(dplyr)
 library(ggplot2)
@@ -13,7 +13,7 @@ gli.cn.alt.frac <- gli.cn.alt.frac %>% mutate(
 # 2  IDHmut-non-codel  36
 # 3      IDHmut-codel  44
 
-# 样本数目统计
+# 
 CliSamCountStat <- function(cli.features, cli.data){
   
   sam.count <- dim(cli.data)[1]
