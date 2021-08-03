@@ -165,7 +165,7 @@ plot.surv <- function(clinical.data, upper.time = NULL, xscale = 1, xlab = "Time
 }
 
 
-source('/pub5/xiaoyun/Jobs/J22/RScripts/LSY.RScripts/PlotFunction/multiplot.r')
+source('/code/Function/multiplot.r')
 
 SubcloGenomeSurvPlot<- function(dat, subtype, feature, method, file.name){
  dat <- subset(dat, IDH_CODEL_SUBTYPE == subtype)
@@ -219,17 +219,17 @@ SubcloGenomeSurvPlot<- function(dat, subtype, feature, method, file.name){
 
 
 # load data
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 
 # ABSOLUTE-based tumour purity
-abs.puri.ploi <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_puri_ploi.rds')
+abs.puri.ploi <- readRDS('/data/tcga_gli_puri_ploi.rds')
 abs.puri.ploi <- subset(abs.puri.ploi, purity>=0.65)
 
 gli.cn.alt.frac <- gli.cn.alt.frac[rownames(abs.puri.ploi), ]
 
 
 cutoff.method <- c('median')
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section1/Results/Survival/HighPurityMedian')
+setwd('/result/Section3/HighPurity')
 
 SubcloGenomeSurvPlot(gli.cn.alt.frac, 'IDHwt', 'subclo_genome_frac', cutoff.method, 'IDHwt_subclo_genome_sur.pdf')
 SubcloGenomeSurvPlot(gli.cn.alt.frac, 'IDHmut-non-codel', 'subclo_genome_frac', cutoff.method, 'IDHmutNonCodel_subclo_genome_sur.pdf')
