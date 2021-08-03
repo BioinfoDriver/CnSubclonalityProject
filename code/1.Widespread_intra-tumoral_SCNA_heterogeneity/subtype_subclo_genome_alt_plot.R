@@ -1,6 +1,6 @@
 
 # load data
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 
 # plot
 SubtypeSubcloBoxPlot <- function(dat, alt.feac, sub.feac, label, cols){
@@ -24,7 +24,7 @@ SubtypeSubcloBoxPlot <- function(dat, alt.feac, sub.feac, label, cols){
  return(box.plot)
 }
 
-source('/pub5/xiaoyun/Jobs/J22/RScripts/LSY.RScripts/PlotFunction/multiplot.r')
+source('/code/Function/multiplot.r')
 
 
 FeacturePlotBySubtype <- function(dat, features, subtype, labels, cols, out.path, file.name){
@@ -40,7 +40,7 @@ FeacturePlotBySubtype <- function(dat, features, subtype, labels, cols, out.path
 }
 
 
-out.path <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section1/Results/SubclonalSCNAsFractionCompare/'
+out.path <- '/result/Section1/'
 features <- c('non_neutral_genome_frac', 'subclo_genome_frac', 'clo_genome_frac', 'subclo_cn_alt_frac')
 
 
