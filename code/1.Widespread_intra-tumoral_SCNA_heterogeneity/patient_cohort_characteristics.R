@@ -44,9 +44,9 @@ CliSamCountStat <- function(cli.features, cli.data){
 }
 
 # Silver set
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/tcga_gli_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/tcga_gli_cn_alt_frac.rds')
 silver.set <- rownames(gli.cn.alt.frac) 
-pan.glio.cli.mol.data <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
+pan.glio.cli.mol.data <- readRDS(file='/data/tcga_glioma_cli_mol.rds')
 silver.set.cli.data <- pan.glio.cli.mol.data[substr(silver.set, 1, 12), ]
 
 # Statistical analysis of clinical molecular characteristics on silver set
@@ -79,6 +79,6 @@ subtype.statistic <- lapply(subtype.name, function(per.type){
 })
 names(subtype.statistic) <- subtype.name
 
-# gold.set <- gold.set.cli.data$bcr_patient_barcode
-# saveRDS(gold.set, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
+gold.set <- gold.set.cli.data$bcr_patient_barcode
+saveRDS(gold.set, file='/data/gold_set.rds')
 
