@@ -1,12 +1,11 @@
 
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources')
-rtks <- read.csv(file='RTKs.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
+rtks <- read.csv(file='/data/RTKs.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
 
-gold.set <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
-gene.het <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources/gene.het.5.0.rds')
+gold.set <- readRDS('/data/gold_set.rds')
+gene.het <- readRDS(file='/data/gene.het.rds')
 gene.het <- gene.het[, paste(gold.set, '01', sep = '-')]
 
-tcga.cli.data <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
+tcga.cli.data <- readRDS('/data/tcga_glioma_cli_mol.rds')
 
 
 
@@ -144,9 +143,7 @@ plot.mulvsunirtk.gbm <- ggbarplot(gbm.mul.uni.rtk.stat, "group", "freq", fill = 
 
 ggsave(ggarrange(plot.rtkvsnonrtk.all, plot.rtkvsnonrtk.gbm, 
  plot.mulvsunirtk.all, plot.mulvsunirtk.gbm, ncol=2, nrow=2, common.legend = TRUE), 
- file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Results/RTKClonalityPlot/rtk_clonality_compare.pdf')
-
-
+ file='result/Section4/rtk_clonality_compare.pdf')
 
 
 
