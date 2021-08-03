@@ -99,7 +99,7 @@ CIndexBySubtype <- function(cli.data, subtype, grade, models, calulate.p = FALSE
 }
 
 # load data
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 
 models <- list(c('subclo_genome_frac'), c('non_neutral_genome_frac'), c('clo_genome_frac'), 
  c('age', 'histological_grade'), 
