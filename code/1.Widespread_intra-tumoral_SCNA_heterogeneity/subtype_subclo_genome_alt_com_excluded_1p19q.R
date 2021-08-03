@@ -17,7 +17,7 @@ CNAltFraction <- function(infile, ploi)
 	abs.seg.call <- subset(abs.seg.call, Sample %in% isect.samples)
 	abs.seg.call$ploidy <- ploi[match(abs.seg.call$Sample, rownames(ploi)), "ploidy"]
 
-	IsNeutralSeg <- function(x) as.integer(abs.seg.call$Modal_Total_CN == round(abs.seg.call$ploidy))
+	IsNeutralSeg <- function(x) as.integer(x$Modal_Total_CN == round(x$ploidy))
 	abs.seg.call$neutral_seg <- IsNeutralSeg(abs.seg.call)
 
 	abs.seg.call$amp_seg <- as.integer(abs.seg.call$Modal_Total_CN > round(abs.seg.call$ploidy))
@@ -60,8 +60,8 @@ CNAltFraction <- function(infile, ploi)
 	return(sub.genome.stat)
 }
 
-gli.puri.ploi <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_puri_ploi.rds')
-in.file <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_abs_seg.txt'
+gli.puri.ploi <- readRDS(file='/data/tcga_gli_puri_ploi.rds')
+in.file <- '/data/tcga_glioma_abs_seg.txt'
 gli.cn.alt.frac <- CNAltFraction(infile=in.file, ploi=gli.puri.ploi)
 
 
@@ -70,8 +70,8 @@ gli.cn.alt.frac <- subset(gli.cn.alt.frac, !(non_neutral_genome_frac > 0.9 | non
 
 
 # gold set
-gold.set <- readRDS( file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
-pan.glio.cli.mol.data <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
+gold.set <- readRDS( file='/data/gold_set.rds')
+pan.glio.cli.mol.data <- readRDS(file='/data/tcga_glioma_cli_mol.rds')
 
 gold.set <- intersect(rownames(gli.cn.alt.frac), paste0(gold.set, '-01'))
 gli.cn.alt.frac <- cbind(gli.cn.alt.frac[gold.set, ], pan.glio.cli.mol.data[substr(gold.set, 1, 12), ])
@@ -93,7 +93,7 @@ gli.cn.alt.frac$IDH_CODEL_SUBTYPE <- factor(gli.cn.alt.frac$IDH_CODEL_SUBTYPE,
 
 
 ########################################## with or without 1p/19q
-cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 gli.cn.alt.frac$all_clo_genome_frac <- cn.alt.frac[rownames(gli.cn.alt.frac), 'clo_genome_frac']
 gli.cn.alt.frac$all_clo_cn_alt_frac <- cn.alt.frac[rownames(gli.cn.alt.frac), 'clo_cn_alt_frac']
 
@@ -157,7 +157,7 @@ SubtypeComByFeacture(features, subtype='IDH_CODEL_SUBTYPE', labels=c('IDHwt', 'I
 
 
 ##################################################plot
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section1/Results/Exclude1P19qAnalysis')
+setwd('/result/Section1/')
 library('ggpubr')
 clo.frac.plot <- ggpaired(codel.cn.alt.frac, cond1="all_clo_genome_frac", cond2="clo_genome_frac", 
  color="condition", line.color="gray", palette="npg", xlab=FALSE, ylab="Clonal SCNAs Burden") + theme(aspect.ratio=1)
