@@ -1,6 +1,6 @@
 
 # whitelisted samples
-setwd('/pub5/xiaoyun/Jobs/J22/EvoClass2.0/OriginalData/PanCanAtlas')
+setwd('/data/OriginalData/')
 sam.qua.anno <- read.csv(file='merged_sample_quality_annotations.tsv', sep='\t', header=TRUE, stringsAsFactors=FALSE)
 
 gli.sam.snp.anno <- subset(sam.qua.anno, cancer.type %in% c('LGG', 'GBM') & platform=='Genome_Wide_SNP_6')
@@ -20,7 +20,7 @@ gli.sam.snp.anno <- subset(gli.sam.snp.anno, !duplicated(patient_barcode)) # 9 s
 
 
 # The Pan-Cancer clinical data
-tcga.cli.data <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/tcga_cli_data.rds') 
+tcga.cli.data <- readRDS(file='/data/tcga_cli_data.rds') 
 gli.cli.data <- subset(tcga.cli.data, cancer_type %in% c('GBM', 'LGG')) # In total, 1111 samples(GBM: 596; LGG: 515)  
 gli.cli.data <- subset(gli.cli.data, histological_type %in% c('Astrocytoma', 'Oligoastrocytoma', 
  'Oligodendroglioma', 'Untreated primary (de novo) GBM')) # 51 samples were excluded (GBM: 51)
@@ -57,7 +57,7 @@ gli.abs.seg.dat <- subset(gli.abs.seg.dat, Sample %in% substr(gli.sam.snp.anno$a
 
 
 # save
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData')
+setwd('/data/')
 write.table(gli.abs.call.dat, file='tcga_glioma_purity_ploidy.txt', sep='\t', quote=FALSE, row.names=FALSE, col.names=TRUE)
 write.table(gli.abs.seg.dat, file='tcga_glioma_abs_seg.txt', sep='\t', quote=FALSE, row.names=FALSE, col.names=TRUE)
 
