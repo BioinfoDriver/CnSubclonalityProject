@@ -1,6 +1,6 @@
 
 # load data
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 
 library(dplyr)
 library(ggpubr)
@@ -42,7 +42,7 @@ CliMolAssoSubcloPlot <- function(dat, features, subtype, cancer.type, cli.mol.fe
  
    return(box.plot)
   })
-  source('/pub5/xiaoyun/Jobs/J22/RScripts/LSY.RScripts/PlotFunction/multiplot.r')
+  source('/code/Function/multiplot.r')
   
   pdf(file.path(out.path, paste0(cli.mol.feac, '.pdf')))
    multiplot(plotlist=plot.list, layout=matrix(seq(1, 4), ncol=2, byrow = TRUE))
@@ -54,19 +54,19 @@ CliMolAssoSubcloPlot <- function(dat, features, subtype, cancer.type, cli.mol.fe
 features <- c('subclo_genome_frac', 'clo_genome_frac')
 
 codel.feacs <- c("age_group", "histological_grade", "laterality", 'TERT_EXPRESSION_STATUS')
-codel.path <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section2/Results/Codel' 
+codel.path <- '/result/Section2/Codel' 
 CliMolAssoSubcloPlot(gli.cn.alt.frac, features, 'IDHmut-codel', c('LGG', 'GBM'), codel.feacs, codel.path)
 
 
 non.codel.feacs <- c("age_group", "gender", "histological_grade", "molecular_histological_type", "kps_group", "tumor_location", 
  "first_presenting_symptom", 'MGMT_PROMOTER_STATUS', 'TERT_EXPRESSION_STATUS', 'SUPERVISED_DNA_METHYLATION_CLUSTER')
-non.codel.path <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section2/Results/Noncodel'
+non.codel.path <- '/result/Section2/Noncodel'
 CliMolAssoSubcloPlot(gli.cn.alt.frac, features, 'IDHmut-non-codel', c('LGG', 'GBM'), non.codel.feacs, non.codel.path)
 
 
 wt.feacs <- c("age_group", "histological_grade", "molecular_histological_type", 'CHR_7_GAIN_CHR_10_LOSS', 
  'TELOMERE_MAINTENANCE', 'TRANSCRIPTOME_SUBTYPE', 'SUPERVISED_DNA_METHYLATION_CLUSTER')
-idh.wt.path <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section2/Results/IDHwt' 
+idh.wt.path <- '/result/Section2/IDHwt' 
 CliMolAssoSubcloPlot(gli.cn.alt.frac, features, 'IDHwt', c('LGG', 'GBM'), wt.feacs, idh.wt.path)
 
 
@@ -85,7 +85,7 @@ age.clo.genome.frac.sca <- ggscatter(data=gli.cn.alt.frac, x='age', y='clo_genom
  facet.by = "IDH_CODEL_SUBTYPE") + theme(aspect.ratio = 1)
 
 source('/pub5/xiaoyun/Jobs/J22/RScripts/LSY.RScripts/PlotFunction/multiplot.r')
-pdf(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section2/Results/age_subclo_genome_alt_frac_corr.pdf')
+pdf(file='/result/Section2/age_subclo_genome_alt_frac_corr.pdf')
  multiplot(plotlist=list(age.subclo.genome.frac.sca, age.clo.genome.frac.sca), cols=1)
 dev.off()
 
@@ -121,7 +121,7 @@ age.clo.genome.frac <- ggboxplot(data=gli.cn.alt.frac, x='age_median_group', y='
  theme(aspect.ratio = 1) + stat_compare_means(label.x.npc = 'left', label.y.npc = 'top')
 
 source('/pub5/xiaoyun/Jobs/J22/RScripts/LSY.RScripts/PlotFunction/multiplot.r')
-pdf(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section2/Results/age_subclo_genome_alt_frac.pdf')
+pdf(file='/result/Section2/age_subclo_genome_alt_frac.pdf')
  multiplot(plotlist=list(age.subclo.genome.frac, age.clo.genome.frac), cols=1)
 dev.off()
 
@@ -144,7 +144,7 @@ grade.clo.genome.frac <- ggboxplot(data=gli.cn.alt.frac, x='histological_grade',
  stat_compare_means(label.x.npc = 'left', label.y.npc = 'top')
 
 source('/pub5/xiaoyun/Jobs/J22/RScripts/LSY.RScripts/PlotFunction/multiplot.r')
-pdf(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section2/Results/grade_subclo_genome_alt_frac.pdf')
+pdf(file='/result/Section2/grade_subclo_genome_alt_frac.pdf')
  multiplot(plotlist=list(grade.subclo.genome.frac, grade.clo.genome.frac), cols=1)
 dev.off()
 
