@@ -1,6 +1,6 @@
 
 # load data
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 
 # age
 library(dplyr)
