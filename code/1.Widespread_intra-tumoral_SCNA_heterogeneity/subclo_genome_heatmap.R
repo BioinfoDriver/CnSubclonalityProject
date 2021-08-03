@@ -1,7 +1,7 @@
 
 
 # load
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 gli.cn.alt.frac <- dplyr::arrange(gli.cn.alt.frac, IDH_CODEL_SUBTYPE, desc(subclo_cn_alt_frac))
 
 # Genome alteration fraction
@@ -43,7 +43,7 @@ cn.alt.plot <- ggbarplot(cn.alt.prop, x="sample", y="alt.prop", fill="type", col
 alt.plot <- ggpubr::ggarrange(gen.alt.plot.part2, gen.alt.plot.part1, cn.alt.plot, heights=c(0.3, 0.4, 0.3), 
   legend="top", common.legend=TRUE, ncol=1, nrow=3, align="v") 
 
-ggsave(alt.plot, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section1/Results/cn_alt_frac.pdf')
+ggsave(alt.plot, file='/result/Section1/cn_alt_frac.pdf')
 
 
 
@@ -54,7 +54,7 @@ library('ComplexHeatmap')
 anno.dat <- gli.cn.alt.frac[, c('IDH_CODEL_SUBTYPE', 'cancer_type', 'molecular_histological_type', 'TRANSCRIPTOME_SUBTYPE', 
  'histological_grade', 'gender', 'age', 'MGMT_PROMOTER_STATUS', 'TERT_PROMOTER_STATUS', 'ATRX_STATUS')]
 
-pdf('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section1/Results/subclo_genome_heatmap.pdf')
+pdf('/result/Section1/subclo_genome_heatmap.pdf')
  heat.anno <- HeatmapAnnotation(df=anno.dat, 
  col=list(cancer_type=setNames(brewer.pal(8, 'Greys')[c(4, 6)], c('LGG', 'GBM')),
  IDH_CODEL_SUBTYPE=setNames(c("#00AFBB", "#E7B800", "#FC4E07"), c("IDHwt", "IDHmut-non-codel", "IDHmut-codel")), 
