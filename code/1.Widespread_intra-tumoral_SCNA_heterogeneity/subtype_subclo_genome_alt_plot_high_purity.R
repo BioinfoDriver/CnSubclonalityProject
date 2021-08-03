@@ -1,9 +1,9 @@
 
 # load data
-gli.cn.alt.frac <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gli_glod_cn_alt_frac.rds')
+gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 
 # ABSOLUTE-based tumour purity
-abs.puri.ploi <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_puri_ploi.rds')
+abs.puri.ploi <- readRDS('/data/tcga_gli_puri_ploi.rds')
 abs.puri.ploi <- subset(abs.puri.ploi, purity>=0.65)
 
 gli.cn.alt.frac <- gli.cn.alt.frac[rownames(abs.puri.ploi), ]
@@ -32,7 +32,7 @@ SubtypeSubcloBoxPlot <- function(dat, alt.feac, sub.feac, label, cols){
 }
 
 
-source('/pub5/xiaoyun/Jobs/J22/RScripts/LSY.RScripts/PlotFunction/multiplot.r')
+source('/code/Function/multiplot.r')
 
 FeacturePlotBySubtype <- function(dat, features, subtype, labels, cols, out.path, file.name){
  
@@ -46,18 +46,18 @@ FeacturePlotBySubtype <- function(dat, features, subtype, labels, cols, out.path
  dev.off()
 }
 
-out.path <- '/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section1/Results/HighTumorPurity/'
+out.path <- '/result/Section1/'
 features <- c('non_neutral_genome_frac', 'subclo_genome_frac', 'clo_genome_frac', 'subclo_cn_alt_frac')
 
 
 FeacturePlotBySubtype(dat=gli.cn.alt.frac, 
  features, subtype='IDH_CODEL_SUBTYPE', labels=c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), 
- cols=c("#FC4E07", "#E7B800", "#00AFBB"), out.path, file.name='mole_subtype_subclo_alt_frac.pdf')
+ cols=c("#FC4E07", "#E7B800", "#00AFBB"), out.path, file.name='high_purity_mole_subtype_subclo_alt_frac.pdf')
 
 FeacturePlotBySubtype(dat=subset(gli.cn.alt.frac, cancer_type=='LGG'), 
  features, subtype='IDH_CODEL_SUBTYPE', labels=c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), 
- cols=c("#FC4E07", "#E7B800", "#00AFBB"), out.path, file.name='lgg_mole_subtype_subclo_alt_frac.pdf')
+ cols=c("#FC4E07", "#E7B800", "#00AFBB"), out.path, file.name='high_purity_lgg_mole_subtype_subclo_alt_frac.pdf')
 
 FeacturePlotBySubtype(dat=subset(gli.cn.alt.frac, cancer_type=='GBM'), 
  features, subtype='IDH_CODEL_SUBTYPE', labels=c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), 
- cols=c("#FC4E07", "#E7B800", "#00AFBB"), out.path, file.name='gbm_mole_subtype_subclo_alt_frac.pdf')
+ cols=c("#FC4E07", "#E7B800", "#00AFBB"), out.path, file.name='high_purity_gbm_mole_subtype_subclo_alt_frac.pdf')
