@@ -1,3 +1,7 @@
 You can download following data from the original website:
 TCGA_mastercalls.abs_segtabs.fixed.txt 
 Original website: https://gdc.cancer.gov/about-data/publications/pancanatlas
+
+gdc_sample_sheet.2020-07-21.tsv
+gdc_download_20200721_025916.394623.tar.gz
+Original website: https://portal.gdc.cancer.gov/ , then manually select LGG's and GBM's count data
