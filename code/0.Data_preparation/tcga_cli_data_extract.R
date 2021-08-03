@@ -46,8 +46,8 @@ TCGAClinicalData <- function(infile)
 	return(cli.data)
 }
 
-in.file <- '/pub5/xiaoyun/Jobs/J22/EvoClass2.0/OriginalData/PanCanAtlas/TCGA-CDR-SupplementalTableS1.xlsx'
+in.file <- '/data/OriginalData/TCGA-CDR-SupplementalTableS1.xlsx'
 tcga.cli.data <- TCGAClinicalData(infile=in.file)
-saveRDS(tcga.cli.data, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/tcga_cli_data.rds') 
+saveRDS(tcga.cli.data, file='/data/tcga_cli_data.rds') 
 
 
