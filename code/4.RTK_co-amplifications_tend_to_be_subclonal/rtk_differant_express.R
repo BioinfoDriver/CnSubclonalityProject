@@ -1,7 +1,6 @@
 
 # RNA-SEQ raw counts
-setwd('/pub5/xiaoyun/Jobs/J22/EvoClass2.0/Revise/de_expression/counts')
-sample.info <- read.csv(file = 'gdc_sample_sheet.2020-07-21.tsv', sep = '\t', header = TRUE, stringsAsFactors = FALSE)
+sample.info <- read.csv(file = '~/counts/gdc_sample_sheet.2020-07-21.tsv', sep = '\t', header = TRUE, stringsAsFactors = FALSE)
 
 sample.info <- subset(sample.info, Sample.Type == 'Primary Tumor')
 sample.info <- sample.info[!duplicated(sample.info$Case.ID), ]
@@ -11,23 +10,21 @@ sample.info <- sample.info[, c('Sample.ID', 'File.Name', 'Project.ID')]
 
 library("DESeq2")
 count <- DESeqDataSetFromHTSeqCount(sampleTable=sample.info, directory=".", design= ~ 1)
-# saveRDS(count, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources/pan_gli_exp_count.rds')
+saveRDS(count, file='/data/pan_gli_exp_count.rds')
 
 
 # procoding genes
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources')
-gene.info <- read.csv(file='gene_with_protein_product.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
+gene.info <- read.csv(file='/data/gene_with_protein_product.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
 gene.info <- gene.info[, c('symbol', 'ensembl_gene_id')]
 
 
 ######## clonal rtk alt Vs subclonal rtk alt
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources')
-rtks <- read.csv(file='RTKs.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
+rtks <- read.csv(file='/data/RTKs.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
 
-tcga.cli.data <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
+tcga.cli.data <- readRDS('/data/tcga_glioma_cli_mol.rds')
 
-gold.set <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
-gene.het <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources/gene.het.rds')
+gold.set <- readRDS('/data/gold_set.rds')
+gene.het <- readRDS(file='/data/gene.het.rds')
 gene.het <- gene.het[, paste(gold.set, '01', sep = '-')]
 
 
@@ -97,9 +94,10 @@ RunDESeq2 <- function(countMatrix, pData){
 diff.exp <- RunDESeq2(countMatrix = exp.data, pData = rtk.alt.sam)
 diff.exp$symbol <- gene.info$symbol[match(rownames(diff.exp), gene.info$ensembl_gene_id)]
 
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Results/RTKDifferentExpress/')
-saveRDS(diff.exp, file='rtk_idhwt_gbm_diff_exp.rds')
 
+saveRDS(diff.exp, file='data/rtk_idhwt_gbm_diff_exp.rds')
+
+setwd('/result/Section4/')
 # idhwt.gbm.diff.exp <- subset(diff.exp, abs(log2FoldChange) > 1 & padj < 0.05)
 # write.table(idhwt.gbm.diff.exp, "idhwt_gbm_diff_exp_gene.txt", sep="\t", quote=F, col.names=TRUE, row.names=TRUE)
 
