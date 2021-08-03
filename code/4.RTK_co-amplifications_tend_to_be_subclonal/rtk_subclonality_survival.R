@@ -1,13 +1,12 @@
 
 #####################Survival
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources')
-rtks <- read.csv(file='RTKs.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
+rtks <- read.csv(file='/data/RTKs.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
 
-gold.set <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
-gene.het <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Resources/gene.het.5.0.rds')
+gold.set <- readRDS('/data/gold_set.rds')
+gene.het <- readRDS(file='/data/gene.het.rds')
 gene.het <- gene.het[, paste(gold.set, '01', sep = '-')]
 
-tcga.cli.data <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
+tcga.cli.data <- readRDS('/data/tcga_glioma_cli_mol.rds')
 tcga.cli.data <- tcga.cli.data[gold.set, ]
 rownames(tcga.cli.data) <- paste0(rownames(tcga.cli.data), '-01', sep='')
 
@@ -234,17 +233,16 @@ RtkLogRankSurAnalysis <- function(het.mat, rtk, cli.data, group.index, subtype, 
  
 }
 
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section3/Results/RTKSurvival/')
-
+setwd('/result/Section4')
 
 RtkLogRankSurAnalysis(gene.het, rtks$Approved.symbol, tcga.cli.data, 'exclude', 
- c('IDHwt'), c('G4'), 1096, 'rtk_idhwt_gbm.pdf', 30.4375*2)
+ c('IDHwt'), c('G4'), 1096, 'rtk_sur_idhwt_gbm.pdf', 30.4375*2)
 RtkLogRankSurAnalysis(gene.het, rtks$Approved.symbol, tcga.cli.data, 'exclude', 
- c('IDHmut-non-codel'), c('G2', 'G3'), 3653, 'rtk_idhwt_lgg.pdf', 30.4375*12)
+ c('IDHmut-non-codel'), c('G2', 'G3'), 3653, 'rtk_sur_idhwt_lgg.pdf', 30.4375*12)
 
 
 # Cox
-source('/pub5/xiaoyun/Jobs/J22/EvoClass2.0/Section3/RScripts/Cox.function.R')
+source('/code/Function/Cox.function.R')
 RtkMulCoxSurAnalysis <- function(het.mat, rtk, group.index, subtype, grade, cli.data, up.time){
  
  rtk.het <- het.mat[rtk, ]
