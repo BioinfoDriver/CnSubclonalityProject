@@ -14,11 +14,23 @@ Purpose of this repository is to share analysis procedure, data and help readers
 
 ## Instructions for Use
 For readers who want to obtain raw/result data, locate data file, then download it with one of following ways:
-* In Github, download file by clicking either Download button or Raw button at corresponding data page
-* Use linux command wget or curl, fo example, you can download PCNA gene sets by
-wget https://github.com/BioinfoDriver/CnSubclonalityProject/tree/main/data/PCNA_Signature.txt
+
+* In Github, download file by clicking either `Download` button or `Raw` button at corresponding data page
+
+* Use linux command `wget` or `curl`, fo example, you can download PCNA gene sets by
+
+wget `https://github.com/BioinfoDriver/CnSubclonalityProject/tree/main/data/PCNA_Signature.txt`
 
 Or you can download whole respository with one of following ways:
 
-* Clone this repository with git clone https://github.com/BioinfoDriver/CnSubclonalityProject.git
-* Download whole respository by clicking Download button at top right of url page https://github.com/BioinfoDriver/CnSubclonalityProject
+* Clone this repository with git clone `https://github.com/BioinfoDriver/CnSubclonalityProject.git`
+
+* Download whole respository by clicking `Download` button at top right of url page https://github.com/BioinfoDriver/CnSubclonalityProject
+
+## Reproduce analysis
+
+For readers who want to reproduce analysis shown in manuscript, please [install R](https://cran.r-project.org/) in your computer.
+
+## Test Environment
+* System: **Linux**
+* Software: **R v3.6.2**
