@@ -1,9 +1,9 @@
 
-gistic.alt <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/wgistic_alt.rds')
+gistic.alt <- readRDS(file='/data/wgistic_alt.rds')
 
 
-gold.set <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
-gli.cli.mol.data <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
+gold.set <- readRDS('/data/gold_set.rds')
+gli.cli.mol.data <- readRDS(file='/data/tcga_glioma_cli_mol.rds')
 
 gli.cli.mol.data <- gli.cli.mol.data[gold.set, ]
 rownames(gli.cli.mol.data) <- paste(rownames(gli.cli.mol.data), '01', sep = '-')
@@ -26,4 +26,4 @@ subtype.peaks <- lapply(subtype.samples, function(samples){
 
 names(subtype.peaks) <- c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt')
 
-saveRDS(subtype.peaks, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section4/Resources/high_fre_alt_peaks.rds')
+saveRDS(subtype.peaks, file='/data/high_fre_alt_peaks.rds')
