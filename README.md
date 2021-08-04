@@ -33,4 +33,4 @@ For readers who want to reproduce analysis shown in manuscript, please [install 
 
 ## Test Environment
 * System: **Linux**
-* Software: **R v3.6.2**
+* Software: **R v4.0.2**
