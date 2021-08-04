@@ -86,9 +86,9 @@ CalSurvPvalue <- function(clonality.data, surv.data, grade, subtype){
 }
 
 
-wgistic.peak.het <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/wgistic_het.rds')
-tcga.cli.data <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
-gold.set <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
+wgistic.peak.het <- readRDS('/data/wgistic_het.rds')
+tcga.cli.data <- readRDS('/data/tcga_glioma_cli_mol.rds')
+gold.set <- readRDS('/data/gold_set.rds')
 
 
 tcga.cli.data <- tcga.cli.data[gold.set, ]
@@ -96,7 +96,7 @@ rownames(tcga.cli.data) <- paste0(rownames(tcga.cli.data), '-01', sep='')
 wgistic.peak.het <- as.data.frame(t(wgistic.peak.het[, paste(gold.set, '01', sep = '-')]))
 
 
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section4/Results')
+setwd('/result/Section5')
 codel.sur.pvalue <- CalSurvPvalue(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), subtype = c('IDHmut-codel'))
 noncodel.sur.pvalue <- CalSurvPvalue(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), subtype = c('IDHmut-non-codel'))
 wt.sur.pvalue <- CalSurvPvalue(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), subtype = c('IDHwt'))
@@ -137,7 +137,7 @@ names(pva.col) <- c('lr.p', 'univ.p', 'mult.p')
 ha = HeatmapAnnotation(df = anno.data, col = list(subtype = mol.col, surtype = sur.col, comtype = com.col, pvaluetype = pva.col), 
 show_legend = FALSE, show_annotation_name = FALSE)
 
-pdf('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section4/Results/pvalue_heatmap.pdf', width=14)
+pdf('/result/Section5/pvalue_heatmap.pdf', width=14)
 	Heatmap(matrix = -log2(all.sur.pvalue), cluster_columns = FALSE, cluster_rows = FALSE, column_split = rep(1:3, each = 27), 
 	show_column_names = FALSE, row_names_side = 'left', row_names_gp = gpar(fontsize = 7), name = "p value", col = col_fun,
 	cell_fun = function(j, i, x, y, width, height, fill) {
