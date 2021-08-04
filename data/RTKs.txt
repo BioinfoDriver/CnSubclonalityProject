@@ -1,0 +1,59 @@
+HGNC ID	Approved symbol	Approved name	Status	Locus type	Previous symbols	Alias symbols	Chromosome	NCBI Gene ID	Ensembl gene ID	Vega gene ID	Group ID	Group name
+HGNC:3385	EPHA1	EPH receptor A1	Approved	gene with protein product	EPHT, EPHT1	EPH	7q34-q35	2041	ENSG00000146904	OTTHUMG00000155894	1095	EPH receptors
+HGNC:19987	EPHA10	EPH receptor A10	Approved	gene with protein product		FLJ16103, FLJ33655	1p34.3	284656	ENSG00000183317	OTTHUMG00000004325	1095	EPH receptors
+HGNC:3386	EPHA2	EPH receptor A2	Approved	gene with protein product	ECK		1p36.13	1969	ENSG00000142627	OTTHUMG00000009527	1095	EPH receptors
+HGNC:3387	EPHA3	EPH receptor A3	Approved	gene with protein product	ETK, ETK1, TYRO4	HEK, HEK4	3p11.1	2042	ENSG00000044524	OTTHUMG00000159040	1095	EPH receptors
+HGNC:3388	EPHA4	EPH receptor A4	Approved	gene with protein product	TYRO1	Hek8	2q36.1	2043	ENSG00000116106	OTTHUMG00000133142	1095	EPH receptors
+HGNC:3389	EPHA5	EPH receptor A5	Approved	gene with protein product		Hek7, TYRO4, CEK7, EHK1	4q13.1-q13.2	2044	ENSG00000145242	OTTHUMG00000129273	1095	EPH receptors
+HGNC:19296	EPHA6	EPH receptor A6	Approved	gene with protein product		FLJ35246	3q11.2	285220	ENSG00000080224	OTTHUMG00000159208	1095	EPH receptors
+HGNC:3390	EPHA7	EPH receptor A7	Approved	gene with protein product		Hek11	6q16.1	2045	ENSG00000135333	OTTHUMG00000015228	1095	EPH receptors
+HGNC:3391	EPHA8	EPH receptor A8	Approved	gene with protein product	EEK	Hek3	1p36.12	2046	ENSG00000070886	OTTHUMG00000002892	1095	EPH receptors
+HGNC:3392	EPHB1	EPH receptor B1	Approved	gene with protein product	EPHT2	Hek6	3q22.2	2047	ENSG00000154928	OTTHUMG00000159804	1095	EPH receptors
+HGNC:3393	EPHB2	EPH receptor B2	Approved	gene with protein product	DRT, ERK, EPHT3	Hek5, Tyro5	1p36.12	2048	ENSG00000133216	OTTHUMG00000002881	1095	EPH receptors
+HGNC:3394	EPHB3	EPH receptor B3	Approved	gene with protein product	ETK2	Hek2, Tyro6	3q27.1	2049	ENSG00000182580	OTTHUMG00000156710	1095	EPH receptors
+HGNC:3395	EPHB4	EPH receptor B4	Approved	gene with protein product	HTK	Tyro11	7q22.1	2050	ENSG00000196411	OTTHUMG00000157040	1095	EPH receptors
+HGNC:3396	EPHB6	EPH receptor B6	Approved	gene with protein product		HEP	7q34	2051	ENSG00000106123	OTTHUMG00000155707	1095	EPH receptors
+HGNC:3236	EGFR	epidermal growth factor receptor	Approved	gene with protein product	ERBB	ERBB1, ERRP	7p11.2	1956	ENSG00000146648	OTTHUMG00000023661	1096	Erb-b2 receptor tyrosine kinases
+HGNC:3430	ERBB2	erb-b2 receptor tyrosine kinase 2	Approved	gene with protein product	NGL	NEU, HER-2, CD340, HER2	17q12	2064	ENSG00000141736	OTTHUMG00000179300	1096	Erb-b2 receptor tyrosine kinases
+HGNC:3431	ERBB3	erb-b2 receptor tyrosine kinase 3	Approved	gene with protein product	LCCS2	HER3	12q13.2	2065	ENSG00000065361	OTTHUMG00000170140	1096	Erb-b2 receptor tyrosine kinases
+HGNC:3432	ERBB4	erb-b2 receptor tyrosine kinase 4	Approved	gene with protein product		ALS19, HER4	2q34	2066	ENSG00000178568	OTTHUMG00000133012	1096	Erb-b2 receptor tyrosine kinases
+HGNC:21	AATK	apoptosis associated tyrosine kinase	Approved	gene with protein product		AATYK, KIAA0641, LMTK1, LMR1, AATYK1, PPP1R77	17q25.3	9625	ENSG00000181409	OTTHUMG00000132717	321	Receptor tyrosine kinases
+HGNC:427	ALK	ALK receptor tyrosine kinase	Approved	gene with protein product		CD246	2p23.2-p23.1	238	ENSG00000171094	OTTHUMG00000152034	321	Receptor tyrosine kinases
+HGNC:905	AXL	AXL receptor tyrosine kinase	Approved	gene with protein product		UFO, JTK11, Tyro7, ARK	19q13.2	558	ENSG00000167601	OTTHUMG00000182727	321	Receptor tyrosine kinases
+HGNC:2433	CSF1R	colony stimulating factor 1 receptor	Approved	gene with protein product	FMS	C-FMS, CSFR, CD115	5q32	1436	ENSG00000182578	OTTHUMG00000130050	321	Receptor tyrosine kinases
+HGNC:2730	DDR1	discoidin domain receptor tyrosine kinase 1	Approved	gene with protein product	NTRK4, PTK3A, NEP, CAK, EDDR1	RTK6, CD167	6p21.33	780	ENSG00000204580	OTTHUMG00000031236	321	Receptor tyrosine kinases
+HGNC:2731	DDR2	discoidin domain receptor tyrosine kinase 2	Approved	gene with protein product	TYRO10, NTRKR3	TKT	1q23.3	4921	ENSG00000162733	OTTHUMG00000034423	321	Receptor tyrosine kinases
+HGNC:3688	FGFR1	fibroblast growth factor receptor 1	Approved	gene with protein product	FLT2, KAL2	H2, H3, H4, H5, CEK, FLG, BFGFR, N-SAM, CD331	8p11.23	2260	ENSG00000077782	OTTHUMG00000147366	321	Receptor tyrosine kinases
+HGNC:3689	FGFR2	fibroblast growth factor receptor 2	Approved	gene with protein product	KGFR, BEK, CFD1, JWS	CEK3, TK14, TK25, ECT1, K-SAM, CD332	10q26.13	2263	ENSG00000066468	OTTHUMG00000019175	321	Receptor tyrosine kinases
+HGNC:3690	FGFR3	fibroblast growth factor receptor 3	Approved	gene with protein product	ACH	CEK2, JTK4, CD333	4p16.3	2261	ENSG00000068078	OTTHUMG00000121148	321	Receptor tyrosine kinases
+HGNC:3691	FGFR4	fibroblast growth factor receptor 4	Approved	gene with protein product		JTK2, CD334	5q35.2	2264	ENSG00000160867	OTTHUMG00000151523	321	Receptor tyrosine kinases
+HGNC:3763	FLT1	fms related receptor tyrosine kinase 1	Approved	gene with protein product	FLT	VEGFR1	13q12.3	2321	ENSG00000102755	OTTHUMG00000016648	321	Receptor tyrosine kinases
+HGNC:3765	FLT3	fms related receptor tyrosine kinase 3	Approved	gene with protein product		STK1, FLK2, CD135	13q12.2	2322	ENSG00000122025	OTTHUMG00000016646	321	Receptor tyrosine kinases
+HGNC:3767	FLT4	fms related receptor tyrosine kinase 4	Approved	gene with protein product		VEGFR3, PCL, VEGFR-3	5q35.3	2324	ENSG00000037280	OTTHUMG00000130931	321	Receptor tyrosine kinases
+HGNC:5465	IGF1R	insulin like growth factor 1 receptor	Approved	gene with protein product		JTK13, CD221, IGFIR, MGC18216, IGFR	15q26.3	3480	ENSG00000140443	OTTHUMG00000149851	321	Receptor tyrosine kinases
+HGNC:6091	INSR	insulin receptor	Approved	gene with protein product		CD220	19p13.2	3643	ENSG00000171105	OTTHUMG00000181992	321	Receptor tyrosine kinases
+HGNC:6093	INSRR	insulin receptor related receptor	Approved	gene with protein product		IRR	1q23.1	3645	ENSG00000027644	OTTHUMG00000041291	321	Receptor tyrosine kinases
+HGNC:6307	KDR	kinase insert domain receptor	Approved	gene with protein product		FLK1, VEGFR, VEGFR2, CD309	4q12	3791	ENSG00000128052	OTTHUMG00000128734	321	Receptor tyrosine kinases
+HGNC:6342	KIT	KIT proto-oncogene, receptor tyrosine kinase	Approved	gene with protein product	PBT	CD117, SCFR, C-Kit	4q12	3815	ENSG00000157404	OTTHUMG00000128713	321	Receptor tyrosine kinases
+HGNC:17880	LMTK2	lemur tyrosine kinase 2	Approved	gene with protein product		KIAA1079, KPI2, KPI-2, cprk, LMR2, BREK, AATYK2, PPP1R100	7q21.3	22853	ENSG00000164715	OTTHUMG00000154256	321	Receptor tyrosine kinases
+HGNC:19295	LMTK3	lemur tyrosine kinase 3	Approved	gene with protein product		KIAA1883, LMR3, TYKLM3, PPP1R101	19q13.33	114783	ENSG00000142235	OTTHUMG00000183312	321	Receptor tyrosine kinases
+HGNC:6721	LTK	leukocyte receptor tyrosine kinase	Approved	gene with protein product		TYK1	15q15.1	4058	ENSG00000062524	OTTHUMG00000130339	321	Receptor tyrosine kinases
+HGNC:7027	MERTK	MER proto-oncogene, tyrosine kinase	Approved	gene with protein product		mer, RP38, c-Eyk, Tyro12	2q13	10461	ENSG00000153208	OTTHUMG00000131278	321	Receptor tyrosine kinases
+HGNC:7029	MET	MET proto-oncogene, receptor tyrosine kinase	Approved	gene with protein product		HGFR, RCCP2, DFNB97	7q31	4233	ENSG00000105976	OTTHUMG00000023299	321	Receptor tyrosine kinases
+HGNC:7381	MST1R	macrophage stimulating 1 receptor	Approved	gene with protein product	RON, PTK8, SEA	CDw136, CD136	3p21.31	4486	ENSG00000164078	OTTHUMG00000156709	321	Receptor tyrosine kinases
+HGNC:7525	MUSK	muscle associated receptor tyrosine kinase	Approved	gene with protein product			9q31.3	4593	ENSG00000030304	OTTHUMG00000020485	321	Receptor tyrosine kinases
+HGNC:8031	NTRK1	neurotrophic receptor tyrosine kinase 1	Approved	gene with protein product		TRK, TRKA, MTC	1q23.1	4914	ENSG00000198400	OTTHUMG00000041304	321	Receptor tyrosine kinases
+HGNC:8032	NTRK2	neurotrophic receptor tyrosine kinase 2	Approved	gene with protein product		TRKB	9q21.33	4915	ENSG00000148053	OTTHUMG00000020120	321	Receptor tyrosine kinases
+HGNC:8033	NTRK3	neurotrophic receptor tyrosine kinase 3	Approved	gene with protein product		TRKC	15q25.3	4916	ENSG00000140538	OTTHUMG00000148677	321	Receptor tyrosine kinases
+HGNC:8803	PDGFRA	platelet derived growth factor receptor alpha	Approved	gene with protein product		CD140a, PDGFR2, GAS9	4q12	5156	ENSG00000134853	OTTHUMG00000128699	321	Receptor tyrosine kinases
+HGNC:8804	PDGFRB	platelet derived growth factor receptor beta	Approved	gene with protein product	PDGFR	JTK12, CD140b, PDGFR1	5q32	5159	ENSG00000113721	OTTHUMG00000130053	321	Receptor tyrosine kinases
+HGNC:9618	PTK7	protein tyrosine kinase 7 (inactive)	Approved	gene with protein product		CCK4	6p21.1	5754	ENSG00000112655	OTTHUMG00000014721	321	Receptor tyrosine kinases
+HGNC:9967	RET	ret proto-oncogene	Approved	gene with protein product	HSCR1, MEN2A, MTC1, MEN2B	PTC, CDHF12, RET51, CDHR16	10q11.21	5979	ENSG00000165731	OTTHUMG00000018024	321	Receptor tyrosine kinases
+HGNC:10256	ROR1	receptor tyrosine kinase like orphan receptor 1	Approved	gene with protein product	NTRKR1		1p31.3	4919	ENSG00000185483	OTTHUMG00000009022	321	Receptor tyrosine kinases
+HGNC:10257	ROR2	receptor tyrosine kinase like orphan receptor 2	Approved	gene with protein product	NTRKR2, BDB, BDB1		9q22.31	4920	ENSG00000169071	OTTHUMG00000020211	321	Receptor tyrosine kinases
+HGNC:10261	ROS1	ROS proto-oncogene 1, receptor tyrosine kinase	Approved	gene with protein product		MCF3, ROS, c-ros-1	6q22.1	6098	ENSG00000047936	OTTHUMG00000016188	321	Receptor tyrosine kinases
+HGNC:10481	RYK	receptor like tyrosine kinase	Approved	gene with protein product	JTK5A	D3S3195, RYK1, JTK5	3q22.2	6259	ENSG00000163785	OTTHUMG00000159750	321	Receptor tyrosine kinases
+HGNC:18889	STYK1	serine/threonine/tyrosine kinase 1	Approved	gene with protein product		SuRTK106, DKFZp761P1010, NOK	12p13.2	55359	ENSG00000060140	OTTHUMG00000168408	321	Receptor tyrosine kinases
+HGNC:11724	TEK	TEK receptor tyrosine kinase	Approved	gene with protein product	VMCM	TIE2, TIE-2, VMCM1, CD202b	9p21.2	7010	ENSG00000120156	OTTHUMG00000019712	321	Receptor tyrosine kinases
+HGNC:11809	TIE1	tyrosine kinase with immunoglobulin like and EGF like domains 1	Approved	gene with protein product	TIE	JTK14	1p34.2	7075	ENSG00000066056	OTTHUMG00000007282	321	Receptor tyrosine kinases
+HGNC:12446	TYRO3	TYRO3 protein tyrosine kinase	Approved	gene with protein product	RSE	Dtk, Brt, Tif, Sky, Etk-2, Rek	15q15.1	7301	ENSG00000092445	OTTHUMG00000130341	321	Receptor tyrosine kinases
