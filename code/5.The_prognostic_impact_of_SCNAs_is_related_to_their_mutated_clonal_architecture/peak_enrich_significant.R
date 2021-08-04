@@ -1,9 +1,9 @@
 
 
-gold.set <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
-wgistic.het <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/wgistic_het.rds')
-gli.cli.mol.data <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
-subtype.peaks <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section4/Resources/high_fre_alt_peaks.rds')
+gold.set <- readRDS('/data/gold_set.rds')
+wgistic.het <- readRDS('/data/wgistic_het.rds')
+gli.cli.mol.data <- readRDS(file='/data/tcga_glioma_cli_mol.rds')
+subtype.peaks <- readRDS(file='/data/high_fre_alt_peaks.rds')
 
 
 gli.cli.mol.data <- gli.cli.mol.data[gold.set, ]
@@ -81,7 +81,5 @@ clo.alt.pvalue <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), functio
 
 
 clo.alt.pvalue.adjust <- sapply(clo.alt.pvalue, function(x) p.adjust(p=x, method = 'fdr'))
-
-
 
 
