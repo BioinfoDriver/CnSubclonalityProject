@@ -6,7 +6,7 @@ Intra-tumoral heterogeneity (ITH) of somatic copy number alterations (ITH-SCNAs)
 
 Purpose of this repository is to share analysis procedure, data and help readers or reviewers to know more detail of this work, reproduce or make use of results they are interested in.
 
-## Contents
+## Repo Contents
 
 * [code](https://github.com/BioinfoDriver/CnSubclonalityProject/tree/main/code): tidy R functions and R script.
 * [data](https://github.com/BioinfoDriver/CnSubclonalityProject/tree/main/data): original and preprocessed data used for analysis and share.
