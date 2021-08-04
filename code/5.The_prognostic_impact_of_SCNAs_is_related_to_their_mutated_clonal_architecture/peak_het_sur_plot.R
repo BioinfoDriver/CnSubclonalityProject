@@ -223,23 +223,22 @@ DrawSurvPlot <- function(clonality.data, surv.data, grade, subtype, file.name){
 }
 
 
-wgistic.peak.het <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/wgistic_het.rds')
-tcga.cli.data <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
-gold.set <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
+wgistic.peak.het <- readRDS('/data/wgistic_het.rds')
+tcga.cli.data <- readRDS('/data/tcga_glioma_cli_mol.rds')
+gold.set <- readRDS('/data/gold_set.rds')
 
 tcga.cli.data <- tcga.cli.data[gold.set, ]
 rownames(tcga.cli.data) <- paste0(rownames(tcga.cli.data), '-01', sep='')
 wgistic.peak.het <- as.data.frame(t(wgistic.peak.het[, paste0(gold.set, '-01', sep='')]))
 
 
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section4/Results')
 DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), 
- subtype = c('IDHmut-codel'), file.name = 'IDHmut_codel_sur_plot.pdf')
+ subtype = c('IDHmut-codel'), file.name = '/data/Section5/IDHmut_codel_sur_plot.pdf')
 
 DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), 
- subtype = c('IDHmut-non-codel'), file.name = 'IDHmut_non_codel_sur_plot.pdf')
+ subtype = c('IDHmut-non-codel'), file.name = '/data/Section5/IDHmut_non_codel_sur_plot.pdf')
 
 DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), 
- subtype = c('IDHwt'), file.name = 'IDHwt_sur_plot.pdf')
+ subtype = c('IDHwt'), file.name = '/data/Section5/IDHwt_sur_plot.pdf')
 
 
