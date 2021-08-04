@@ -81,15 +81,15 @@ PeakHetPlot <- function(het.mat, mole.subtype, subtype.peaks, outfile){
 }
 
 
-gold.set <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/gold_set.rds')
-wgistic.het <- readRDS('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/wgistic_het.rds')
-gli.cli.mol.data <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_glioma_cli_mol.rds')
-subtype.peaks <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section4/Resources/high_fre_alt_peaks.rds')
+gold.set <- readRDS('/data/gold_set.rds')
+wgistic.het <- readRDS('/data/wgistic_het.rds')
+gli.cli.mol.data <- readRDS(file='/data/tcga_glioma_cli_mol.rds')
+subtype.peaks <- readRDS(file='/data/high_fre_alt_peaks.rds')
 
 
 gli.cli.mol.data <- gli.cli.mol.data[gold.set, ]
 rownames(gli.cli.mol.data) <- paste(rownames(gli.cli.mol.data), '01', sep = '-')
 wgistic.het <- wgistic.het[, paste(gold.set, '01', sep = '-')]
 
-setwd('/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Results/Section4/Results/PeakHet')
-PeakHetPlot(het.mat=wgistic.het, mole.subtype=gli.cli.mol.data, subtype.peaks, 'wpeak_het_heatmap.pdf')
+
+PeakHetPlot(het.mat=wgistic.het, mole.subtype=gli.cli.mol.data, subtype.peaks, '/result/Section5/wpeak_het_heatmap.pdf')
