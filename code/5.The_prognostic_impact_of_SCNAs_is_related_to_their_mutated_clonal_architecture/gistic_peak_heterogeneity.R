@@ -38,8 +38,8 @@ QueryGisticSubAlt <- function(ra, query,
     return(qa)
 }
 
-abs.seg.call <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_seg_call_grl.rds')
-gistic.peak <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/gbmlgg_gistic_peak.rds')
+abs.seg.call <- readRDS(file='/data/tcga_gli_seg_call_grl.rds')
+gistic.peak <- readRDS(file='/data/OriginalData/gbmlgg_gistic_peak.rds')
 
 
 ra <- GetMatchedAbsoluteCalls(abs.seg.call)
@@ -78,7 +78,7 @@ QualitativeGisticAlt <- function(alt, ploi){
 }
 
 
-abs.puri.ploi <- readRDS(file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/tcga_gli_puri_ploi.rds')
+abs.puri.ploi <- readRDS(file='/data/tcga_gli_puri_ploi.rds')
 
 wround.gistic.alt <- QualitativeGisticAlt(wround.gistic.alt, abs.puri.ploi)
 mround.gistic.alt <- QualitativeGisticAlt(mround.gistic.alt, abs.puri.ploi)
@@ -112,7 +112,7 @@ RetainDomType <- function(alt.mat){
 }
 
 wround.gistic.alt <- RetainDomType(wround.gistic.alt)
-mround.gistic.alt <- RetainDomType(mround.gistic.alt)
+# mround.gistic.alt <- RetainDomType(mround.gistic.alt)
 
 
 
@@ -143,14 +143,14 @@ GisticHetPeak <- function(gistic.subcl, gistic.alt)
 }
 
 wgistic.het <- GisticHetPeak(wround.gistic.subcl, wround.gistic.alt)
-mgistic.het <- GisticHetPeak(mround.gistic.subcl, mround.gistic.alt)
+# mgistic.het <- GisticHetPeak(mround.gistic.subcl, mround.gistic.alt)
 
 
-saveRDS(wgistic.het, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/wgistic_het.rds')
-saveRDS(mgistic.het, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/mgistic_het.rds')
+saveRDS(wgistic.het, file='/data/wgistic_het.rds')
+# saveRDS(mgistic.het, file='/data/mgistic_het.rds')
 
-saveRDS(wround.gistic.alt, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/wgistic_alt.rds')
-saveRDS(mround.gistic.alt, file='/pub5/xiaoyun/Jobs/J22/CopyNumberClonalityProject/Resource/CuratedData/mgistic_alt.rds')
+saveRDS(wround.gistic.alt, file='/data/wgistic_alt.rds')
+# saveRDS(mround.gistic.alt, file='/data/mgistic_alt.rds')
 
 
 
