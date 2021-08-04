@@ -19,7 +19,7 @@ For readers who want to obtain raw/result data, locate data file, then download 
 
 * Use linux command `wget` or `curl`, fo example, you can download PCNA gene sets by
 
-wget `https://github.com/BioinfoDriver/CnSubclonalityProject/tree/main/data/PCNA_Signature.txt`
+  wget `https://github.com/BioinfoDriver/CnSubclonalityProject/tree/main/data/PCNA_Signature.txt`
 
 Or you can download whole respository with one of following ways:
 
