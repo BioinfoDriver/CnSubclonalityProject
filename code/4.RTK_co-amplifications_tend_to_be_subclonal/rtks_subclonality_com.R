@@ -11,7 +11,7 @@ tcga.cli.data <- readRDS('/data/tcga_glioma_cli_mol.rds')
 
 RtkNonRtkAmpClonalityCom <- function(het.mat, rtk, cli.data, subtype, grade){
  
- cli.data <- subset(cli.data, IDH_CODEL_SUBTYPE %in% subtype & histological_grade %in% grade)
+ cli.data <- subset(cli.data, Integrated_Diagnoses %in% subtype & histological_grade %in% grade)
  rtk.het <- het.mat[rtk, intersect(colnames(het.mat), paste0(rownames(cli.data), '-01'))]
  
  print(table(rtk.het))
@@ -28,14 +28,14 @@ RtkNonRtkAmpClonalityCom <- function(het.mat, rtk, cli.data, subtype, grade){
 }
 
 RtkNonRtkAmpClonalityCom(gene.het, rtks$Approved.symbol, tcga.cli.data, 
-	c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), c('G2', 'G3', 'G4', NA))
-RtkNonRtkAmpClonalityCom(gene.het, rtks$Approved.symbol, tcga.cli.data, c('IDHwt'), c('G4'))
+	c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), c('G2', 'G3', 'G4', NA)) # 1.595351e-06
+RtkNonRtkAmpClonalityCom(gene.het, rtks$Approved.symbol, tcga.cli.data, c('Glioblastoma,IDHwt'), c('G4')) # 0.001944306
 
 
 
 MulRtkUniRtkAmpClonalityCom <- function(het.mat, rtk, cli.data, subtype, grade){
  
- cli.data <- subset(cli.data, IDH_CODEL_SUBTYPE %in% subtype & histological_grade %in% grade)
+ cli.data <- subset(cli.data, Integrated_Diagnoses %in% subtype & histological_grade %in% grade)
  
  rtk.het <- het.mat[rtk, intersect(colnames(het.mat), paste0(rownames(cli.data), '-01'))]
 
@@ -55,8 +55,8 @@ MulRtkUniRtkAmpClonalityCom <- function(het.mat, rtk, cli.data, subtype, grade){
 }
 
 MulRtkUniRtkAmpClonalityCom(gene.het, rtks$Approved.symbol, tcga.cli.data, 
-	c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), c('G2', 'G3', 'G4', NA))
-MulRtkUniRtkAmpClonalityCom(gene.het, rtks$Approved.symbol, tcga.cli.data, c('IDHwt'), c('G4'))
+ c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), c('G2', 'G3', 'G4', NA)) # 2.835653e-05
+MulRtkUniRtkAmpClonalityCom(gene.het, rtks$Approved.symbol, tcga.cli.data, c('Glioblastoma,IDHwt'), c('G4')) # 4.565713e-09
 
 
 
@@ -64,7 +64,7 @@ MulRtkUniRtkAmpClonalityCom(gene.het, rtks$Approved.symbol, tcga.cli.data, c('ID
 
 RtkAmplificationFrequency <- function(het.mat, rtk, cli.data, subtype, grade){
  
- cli.data <- subset(cli.data, IDH_CODEL_SUBTYPE %in% subtype & histological_grade %in% grade)
+ cli.data <- subset(cli.data, Integrated_Diagnoses %in% subtype & histological_grade %in% grade)
  rtk.het <- het.mat[rtk, intersect(colnames(het.mat), paste0(rownames(cli.data), '-01'))]
  rtk.het[rtk.het < 0] <- 0
  
@@ -102,17 +102,18 @@ RtkAmplificationFrequency <- function(het.mat, rtk, cli.data, subtype, grade){
 }
 
 RtkAmplificationFrequency(gene.het, rtks$Approved.symbol, tcga.cli.data, 
-	c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), c('G2', 'G3', 'G4', NA))
-RtkAmplificationFrequency(gene.het, rtks$Approved.symbol, tcga.cli.data, c('IDHwt'), c('G4'))
+ c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), c('G2', 'G3', 'G4', NA))
+RtkAmplificationFrequency(gene.het, rtks$Approved.symbol, tcga.cli.data, c('Glioblastoma,IDHwt'), c('G4'))
 
 
 
 #########################################################Plot
+library('ggpubr')
 col.pal <- c("#D42527", "#E59398")
-all.rtk.vs.nonrtk.stat <- data.frame(freq=c(0.552, 0.448, 0.466, 0.534), group=rep(c('RTK', 'Non-RTK'), each=2), 
+all.rtk.vs.nonrtk.stat <- data.frame(freq=c(0.546, 0.454, 0.463, 0.537), group=rep(c('RTK', 'Non-RTK'), each=2), 
 	clonality=rep(c('High-level clonal amplification', 'High-level subclonal amplification'), times=2))
 
-gbm.rtk.vs.nonrtk.stat <- data.frame(freq=c(0.551, 0.449, 0.480, 0.520), group=rep(c('RTK', 'Non-RTK'), each=2), 
+gbm.rtk.vs.nonrtk.stat <- data.frame(freq=c(0.557, 0.443, 0.492, 0.508), group=rep(c('RTK', 'Non-RTK'), each=2), 
 	clonality=rep(c('High-level clonal amplification', 'High-level subclonal amplification'), times=2))
 
 plot.rtkvsnonrtk.all <- ggbarplot(all.rtk.vs.nonrtk.stat, "group", "freq", fill = "clonality", color="clonality", 
@@ -125,10 +126,10 @@ plot.rtkvsnonrtk.gbm <- ggbarplot(gbm.rtk.vs.nonrtk.stat, "group", "freq", fill 
 
 
 
-all.mul.uni.rtk.stat <- data.frame(freq=c(0.524, 0.476, 0.728, 0.272), group=rep(c('co-amp', 'non-co-amp'), each=2), 
+all.mul.uni.rtk.stat <- data.frame(freq=c(0.518, 0.482, 0.728, 0.272), group=rep(c('co-amp', 'non-co-amp'), each=2), 
 	clonality=rep(c('High-level clonal amplification', 'High-level subclonal amplification'), times=2))
 
-gbm.mul.uni.rtk.stat <- data.frame(freq=c(0.505, 0.495, 0.833, 0.167), group=rep(c('co-amp', 'non-co-amp'), each=2), 
+gbm.mul.uni.rtk.stat <- data.frame(freq=c(0.510, 0.490, 0.85, 0.15), group=rep(c('co-amp', 'non-co-amp'), each=2), 
 	clonality=rep(c('High-level clonal amplification', 'High-level subclonal amplification'), times=2))
 
 plot.mulvsunirtk.all <- ggbarplot(all.mul.uni.rtk.stat, "group", "freq", fill = "clonality", color="clonality", 
@@ -140,10 +141,10 @@ plot.mulvsunirtk.gbm <- ggbarplot(gbm.mul.uni.rtk.stat, "group", "freq", fill = 
  lab.vjust=2, palette=col.pal) + theme(axis.text.y = element_text(size=7), axis.text.x = element_text(size=6))
 
 
+ggsave(ggarrange(plot.rtkvsnonrtk.all, plot.rtkvsnonrtk.gbm, plot.mulvsunirtk.all, 
+ plot.mulvsunirtk.gbm, ncol=2, nrow=2, common.legend = TRUE), file='/result/Section4/rtk_clonality_compare.pdf')
 
-ggsave(ggarrange(plot.rtkvsnonrtk.all, plot.rtkvsnonrtk.gbm, 
- plot.mulvsunirtk.all, plot.mulvsunirtk.gbm, ncol=2, nrow=2, common.legend = TRUE), 
- file='result/Section4/rtk_clonality_compare.pdf')
+
 
 
 

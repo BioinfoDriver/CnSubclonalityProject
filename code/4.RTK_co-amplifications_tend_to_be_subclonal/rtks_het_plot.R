@@ -14,7 +14,7 @@ wrtk.het <- wrtk.het[, colSums(abs(wrtk.het))!=0]
 
 
 # annotation
-gli.cli.mol.data <- readRDS(file='/data/tcga_glioma_cli_mol.rds')
+gli.cli.mol.data <- readRDS(file='/dataa/tcga_glioma_cli_mol.rds')
 rownames(gli.cli.mol.data) <- paste(rownames(gli.cli.mol.data), '01', sep = '-')
 
 # gli.cli.mol.data <- subset(gli.cli.mol.data, histological_grade %in% ('G4'))
@@ -40,13 +40,13 @@ library('ComplexHeatmap')
 library('RColorBrewer')
 
 mol.col <- c("#00AFBB", "#E7B800", "#FC4E07")
-names(mol.col) <- c("IDHwt", "IDHmut-non-codel", "IDHmut-codel")
+names(mol.col) <- c('Glioblastoma,IDHwt', 'Astrocytoma,IDHmut', 'Oligodendroglioma,IDHmut-codel')
 
-ha = HeatmapAnnotation(df = gli.cli.mol.data[, 'IDH_CODEL_SUBTYPE', FALSE], col = list(IDH_CODEL_SUBTYPE = mol.col), 
+ha = HeatmapAnnotation(df = gli.cli.mol.data[, 'Integrated_Diagnoses', FALSE], col = list(Integrated_Diagnoses = mol.col), 
  show_legend = FALSE, show_annotation_name = FALSE)
 
 
-pdf('/result/all_rtk_plot.pdf')
+pdf('/result/Section4/all_rtk_plot.pdf')
  het.col <- c("#FC9272", "#CB181D", "#F7F7F7", "#084594", "#9ECAE1")
  names(het.col) <- c(2, 1, 0, -1, -2)
  Heatmap(matrix = wrtk.het, cluster_columns = FALSE, cluster_rows = FALSE, col = het.col, 

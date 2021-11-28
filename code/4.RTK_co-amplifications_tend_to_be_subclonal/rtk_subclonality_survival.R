@@ -8,7 +8,14 @@ gene.het <- gene.het[, paste(gold.set, '01', sep = '-')]
 
 tcga.cli.data <- readRDS('/data/tcga_glioma_cli_mol.rds')
 tcga.cli.data <- tcga.cli.data[gold.set, ]
-rownames(tcga.cli.data) <- paste0(rownames(tcga.cli.data), '-01', sep='')
+
+# library('tidyverse')
+tcga.cli.data <- tcga.cli.data %>% mutate(
+	kps_score = as.character(cut_width(karnofsky_performance_score, width = 10, boundary = 10)),
+	kps_score = ifelse(kps_score %in% c('[20,30]', '(30,40]', '(40,50]', '(50,60]', '(60,70]', '(70,80]'), "<=80", kps_score)) 
+
+rownames(tcga.cli.data) <- paste0(tcga.cli.data$bcr_patient_barcode, '-01', sep='')
+
 
 # Survival plot
 plot.surv <- function(clinical.data, upper.time = NULL, xscale = 1, xlab = "Time", median.time = TRUE, 
@@ -208,9 +215,10 @@ RtkLogRankSurAnalysis <- function(het.mat, rtk, cli.data, group.index, subtype, 
   times=c(length(rtk.clo.sam), length(rtk.sub.sam))))
  rownames(rtk.clo.mat) <- c(rtk.clo.sam, rtk.sub.sam) 
  
- cli.data <- subset(cli.data, IDH_CODEL_SUBTYPE %in% subtype & histological_grade %in% grade)
+ cli.data <- subset(cli.data, Integrated_Diagnoses %in% subtype & histological_grade %in% grade)
  cli.data <- merge(cli.data, rtk.clo.mat, by = 'row.names')
  
+ print(table(cli.data$subtype))
  # OS, DSS PFI
  sur.plot.list <- lapply(c('os', 'dss', 'pfi'), function(surv.type){
   
@@ -233,12 +241,12 @@ RtkLogRankSurAnalysis <- function(het.mat, rtk, cli.data, group.index, subtype, 
  
 }
 
-setwd('/result/Section4')
+setwd('/result/Section4/')
 
 RtkLogRankSurAnalysis(gene.het, rtks$Approved.symbol, tcga.cli.data, 'exclude', 
- c('IDHwt'), c('G4'), 1096, 'rtk_sur_idhwt_gbm.pdf', 30.4375*2)
+ c('Glioblastoma,IDHwt'), c('G4'), 1096, 'rtk_idhwt_gbm.pdf', 30.4375*2)
 RtkLogRankSurAnalysis(gene.het, rtks$Approved.symbol, tcga.cli.data, 'exclude', 
- c('IDHmut-non-codel'), c('G2', 'G3'), 3653, 'rtk_sur_idhwt_lgg.pdf', 30.4375*12)
+ c('Astrocytoma,IDHmut'), c('G2', 'G3', 'G4'), 3653, 'rtk_idhwt_lgg.pdf', 30.4375*12)
 
 
 # Cox
@@ -273,16 +281,19 @@ RtkMulCoxSurAnalysis <- function(het.mat, rtk, group.index, subtype, grade, cli.
   times=c(length(rtk.clo.sam), length(rtk.sub.sam))))
  rownames(rtk.clo.mat) <- c(rtk.clo.sam, rtk.sub.sam)
 
- cli.data <- subset(cli.data, IDH_CODEL_SUBTYPE %in% subtype & histological_grade %in% grade)
+ cli.data <- subset(cli.data, Integrated_Diagnoses %in% subtype & histological_grade %in% grade)
  cli.data <- merge(cli.data, rtk.clo.mat, by = 'row.names')
  
+ # return(cli.data)
  # OS, DSS PFI
  mul.cox.res <- lapply(c('os', 'dss', 'pfi'), function(surv.type){
   
   surv.data <- cli.data[, c('Row.names', surv.type, paste0(surv.type, '_time'), 
-   'age', 'gender', 'histological_grade', 'IDH_CODEL_SUBTYPE', 'group')]
-  colnames(surv.data) <- c('Patient_ID', 'event', 'time', 'age', 'gender', 'grade', 'subtype', 'group')
+   'age', 'gender', 'histological_grade', 'Integrated_Diagnoses', 'group', 'kps_score')]# 
+  colnames(surv.data) <- c('Patient_ID', 'event', 'time', 'age', 'gender', 'grade', 
+   'subtype', 'group', 'kps_score')
   
+  print(nrow(surv.data))
   surv.data <- subset(surv.data, !is.na(grade))
   if (!is.null(up.time)) surv.data <- surv.data[surv.data$time <= up.time,]
   
@@ -301,7 +312,7 @@ RtkMulCoxSurAnalysis <- function(het.mat, rtk, group.index, subtype, grade, cli.
   }
   
   if(length(unique(surv.data$subtype)) == 1 & length(unique(surv.data$grade)) == 1){
-   cox.res <- Cox.function(surv.data$time, surv.data$event, clinical.data=surv.data, clinical.variate=c(4, 5, 8))
+   cox.res <- Cox.function(surv.data$time, surv.data$event, clinical.data=surv.data, clinical.variate=c(4, 5, 8:9))
   }  
 
   return(cox.res)
@@ -311,10 +322,10 @@ RtkMulCoxSurAnalysis <- function(het.mat, rtk, group.index, subtype, grade, cli.
 }
 
 
-RtkMulCoxSurAnalysis(gene.het, rtks$Approved.symbol, 'exclude', 
- c('IDHwt'), c('G4'), tcga.cli.data, 1096)
+RtkMulCoxSurAnalysis(gene.het, rtks$Approved.symbol, 'exclude', # 
+ c('Glioblastoma,IDHwt'), c('G4'), subset(tcga.cli.data, !is.na(kps_score)), 1096)
 
 RtkMulCoxSurAnalysis(gene.het, rtks$Approved.symbol, 'exclude', 
- c('IDHwt'), c('G2', 'G3'), tcga.cli.data, 3653)
+ c('Astrocytoma,IDHmut'), c('G2', 'G3', 'G4'), tcga.cli.data, 3653)
 
 

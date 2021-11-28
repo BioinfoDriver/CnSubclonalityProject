@@ -1,6 +1,7 @@
 
 ############################################HGNC protein-coding gene
-gene.info <- read.csv(file='/data/gene_with_protein_product.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
+setwd('/data/OriginalData/')
+gene.info <- read.csv(file='gene_with_protein_product.txt', sep='\t', header=TRUE, stringsAsFactors=FALSE)
 gene.info <- gene.info[, c('hgnc_id', 'symbol', 'name', 'location', 'alias_symbol', 
  'gene_family', 'gene_family_id', 'entrez_id', 'ensembl_gene_id')]
 gene.info$hgnc_id  <- gsub(pattern='HGNC:', replacement='', gene.info$hgnc_id)
@@ -85,7 +86,7 @@ QualitativeGisticAlt <- function(alt, ploi){
 		
 		amp.index <- which(alt.vec >= round(ploi[samp, 'ploidy']) + 2)
 		del.index <- which(alt.vec <= round(ploi[samp, 'ploidy']) - 2)
-		wildtype.index.2 <- which((alt.vec > round(ploi[samp, 'ploidy']) - 2) & (alt.vec < (ploi[samp, 'ploidy']) + 2))
+		wildtype.index.2 <- which((alt.vec > round(ploi[samp, 'ploidy']) - 2) & (alt.vec < round(ploi[samp, 'ploidy']) + 2))
 	
 		alt.vec[wildtype.index.1] <- 0
 		alt.vec[wildtype.index.2] <- 0
@@ -133,6 +134,7 @@ GisticHetPeak <- function(subcl, alt)
 gene.het <- GisticHetPeak(wround.gene.subcl, wround.gene.alt)
 
 saveRDS(gene.het, file='/data/gene.het.rds')
+
 
 
 
