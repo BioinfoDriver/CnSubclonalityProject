@@ -5,10 +5,9 @@ gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 # age
 library(dplyr)
 library(ggplot2)
-AgeSubcloGenomeFracCor <- function(dat, cancer.type){
+AgeSubcloGenomeFracCor <- function(dat){
 
- dat <- subset(dat, cancer_type %in% cancer.type)
- cor.pvalue <- lapply(split(dat, dat$IDH_CODEL_SUBTYPE), function(subclo.genome.frac){
+ cor.pvalue <- lapply(split(dat, dat$Integrated_Diagnoses), function(subclo.genome.frac){
   
   features <- c('subclo_genome_frac', 'clo_genome_frac')
  
@@ -37,7 +36,7 @@ AgeSubcloGenomeFracCor <- function(dat, cancer.type){
  return(cor.pvalue)
 }
 
-AgeSubcloGenomeFracCor(gli.cn.alt.frac, c('LGG', 'GBM'))
+age.pvalues <- AgeSubcloGenomeFracCor(gli.cn.alt.frac)
 
 
 # other features
@@ -45,58 +44,72 @@ gli.cn.alt.frac <- gli.cn.alt.frac %>%
   mutate(kps_group = as.character(cut_width(karnofsky_performance_score, width = 10, boundary = 10)),
 		 kps_group = ifelse(kps_group %in% c('[20,30]', '(30,40]', '(40,50]', '(50,60]', '(60,70]'), "<=70", kps_group))
 
+gli.cn.alt.frac$CDKN2AB <- ifelse(gli.cn.alt.frac$CDKN2AB == 1, 'Deletion', 'Diploid')
+gli.cn.alt.frac$EGFR <- ifelse(gli.cn.alt.frac$EGFR == 1, 'Amplification', 'Diploid')
 
-CliMolAssoSubcloBurden <- function(dat, features, subtype, cancer.type, cli.mol.feacs){
- dat <- subset(dat, IDH_CODEL_SUBTYPE %in% subtype & cancer_type %in% cancer.type)
+
+CliMolAssoSubcloBurden <- function(dat, features, subtype, cli.mol.feacs, filter.num){
+ dat <- subset(dat, Integrated_Diagnoses %in% subtype)
  
  feac.pvalues <- lapply(features, function(feac){
-  pvalues <- lapply(cli.mol.feacs, function(cli.mol.feac){
-   
-   num <- table(dat[, cli.mol.feac])
-   char <- names(num)[num>5]
-   dat.del <- subset(dat, get(cli.mol.feac) %in% char)
   
-   if(n_distinct(dat.del[, cli.mol.feac])<=1){
-    p <- NA
-	
-   }else if(n_distinct(dat.del[, cli.mol.feac])>2){
-     p <- kruskal.test(get(feac) ~ get(cli.mol.feac), dat.del)$p.value
+  pvalues <- sapply(cli.mol.feacs, function(cli.mol.feac){
+   
+   if(cli.mol.feac == 'age'){
+  
+   subclo.genome.frac <- dat %>% mutate(age_group_median = ifelse(age >= median(age),  'elder', 'younger'))
+   p <- wilcox.test(get(feac) ~ age_group_median, subclo.genome.frac)$p.value   
 	
    }else{
-     p <- wilcox.test(get(feac) ~ get(cli.mol.feac), dat.del)$p.value
    
+    num <- table(dat[, cli.mol.feac])
+    char <- names(num)[num >= filter.num]
+    dat.del <- subset(dat, get(cli.mol.feac) %in% char)
+    
+    if(n_distinct(dat.del[, cli.mol.feac])<=1){
+     p <- NA
+	 
+    }else if(n_distinct(dat.del[, cli.mol.feac])>2){
+      p <- kruskal.test(get(feac) ~ get(cli.mol.feac), dat.del)$p.value
+	 
+    }else{
+      p <- wilcox.test(get(feac) ~ get(cli.mol.feac), dat.del)$p.value
+    
+    }
    }
+   
    return(p)
   
   })
   
-  
- names(pvalues) <- cli.mol.feacs
- return(pvalues)
+ qvalues <- p.adjust(pvalues, 'fdr') 
+ pqvalues <- data.frame(pvalues, qvalues)
+ rownames(pqvalues) <- cli.mol.feacs
+ return(pqvalues)
  
  })
+ 
  feac.pvalues <- do.call(cbind, feac.pvalues)
- colnames(feac.pvalues) <- features
+ colnames(feac.pvalues) <- paste0(rep(features, each=2), c('_pvalue', '_qvalue'))
  return(feac.pvalues)
 }
 
 features <- c('subclo_genome_frac', 'clo_genome_frac')
 
-codel.feacs <- c("gender", "race", "histological_grade", "tumor_sample_procurement_method", 
- "kps_group", "laterality", "family_history_of_cancer", "tumor_location", "first_presenting_symptom",  
- 'ATRX_STATUS', "TERT_PROMOTER_STATUS", 'TERT_EXPRESSION_STATUS','TELOMERE_MAINTENANCE', 'TRANSCRIPTOME_SUBTYPE')
+
+codel.feacs <- c("age", "gender", "histological_grade", "tumor_sample_procurement_method", "kps_group", "laterality", 
+ "family_history_of_cancer", "tumor_location", "first_presenting_symptom", 'TERT_EXPRESSION_STATUS', 'TRANSCRIPTOME_SUBTYPE')
  
-non.codel.feacs <- c("gender", "race", "histological_grade", "molecular_histological_type",
- "tumor_sample_procurement_method", "kps_group", "laterality", "family_history_of_cancer", "tumor_location", 
- "first_presenting_symptom", 'MGMT_PROMOTER_STATUS', 'ATRX_STATUS', "TERT_PROMOTER_STATUS", 
- 'TERT_EXPRESSION_STATUS', 'TELOMERE_MAINTENANCE', 'TRANSCRIPTOME_SUBTYPE', 'SUPERVISED_DNA_METHYLATION_CLUSTER')
+non.codel.feacs <- c("age", "gender", "histological_grade", "tumor_sample_procurement_method", "kps_group", "laterality", 
+ "family_history_of_cancer", "tumor_location", "first_presenting_symptom", 'CDKN2AB', 'ATRX_STATUS', 'TERT_EXPRESSION_STATUS', 
+ 'MGMT_PROMOTER_STATUS', 'TRANSCRIPTOME_SUBTYPE', 'SUPERVISED_DNA_METHYLATION_CLUSTER')
  
-wt.feacs <- c("gender", "race", "histological_grade", "molecular_histological_type",
- "tumor_sample_procurement_method", "kps_group", "laterality", "family_history_of_cancer", "tumor_location", 
- "first_presenting_symptom", 'CHR_7_GAIN_CHR_10_LOSS', 'CHR_19_20_CO_GAIN', 'MGMT_PROMOTER_STATUS', 
- 'ATRX_STATUS', "TERT_PROMOTER_STATUS", 'TERT_EXPRESSION_STATUS','TELOMERE_MAINTENANCE', 
- 'TRANSCRIPTOME_SUBTYPE', 'SUPERVISED_DNA_METHYLATION_CLUSTER')
+wt.feacs <- c("age", "gender", "race", "tumor_sample_procurement_method", "kps_group", "laterality", 
+ "family_history_of_cancer", "tumor_location", "first_presenting_symptom", 'CHR_7_GAIN_CHR_10_LOSS', 'CDKN2AB', 'EGFR', 
+ 'TERT_EXPRESSION_STATUS', 'CHR_19_20_CO_GAIN', 'MGMT_PROMOTER_STATUS', 'TRANSCRIPTOME_SUBTYPE', 'SUPERVISED_DNA_METHYLATION_CLUSTER')
  
-codel.pvalues <- CliMolAssoSubcloBurden(gli.cn.alt.frac, features, 'IDHmut-codel', c('LGG', 'GBM'), codel.feacs)
-non.codel.pvalues <- CliMolAssoSubcloBurden(gli.cn.alt.frac, features, 'IDHmut-non-codel', c('LGG', 'GBM'), non.codel.feacs)
-wt.pvalues <- CliMolAssoSubcloBurden(gli.cn.alt.frac, features, 'IDHwt', c('LGG', 'GBM'), wt.feacs)
+
+codel.pvalues <- CliMolAssoSubcloBurden(gli.cn.alt.frac, features, 'Oligodendroglioma,IDHmut-codel', codel.feacs, 10)
+non.codel.pvalues <- CliMolAssoSubcloBurden(gli.cn.alt.frac, features, 'Astrocytoma,IDHmut', non.codel.feacs, 10)
+wt.pvalues <- CliMolAssoSubcloBurden(gli.cn.alt.frac, features, 'Glioblastoma,IDHwt', wt.feacs, 10)
+
