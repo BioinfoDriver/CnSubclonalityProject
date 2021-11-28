@@ -2,7 +2,7 @@
 library(survival)
 ClonalitySurvPvalue <- function(clonality.data, surv.data, surv.type, grade, subtype){
 	
-	surv.data <- subset(surv.data, histological_grade %in% grade & IDH_CODEL_SUBTYPE  %in% subtype)
+	surv.data <- subset(surv.data, histological_grade %in% grade & Integrated_Diagnoses  %in% subtype)
 	
 	surv.pvalue <- lapply(colnames(clonality.data), function(peak){
 
@@ -97,9 +97,9 @@ wgistic.peak.het <- as.data.frame(t(wgistic.peak.het[, paste(gold.set, '01', sep
 
 
 setwd('/result/Section5')
-codel.sur.pvalue <- CalSurvPvalue(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), subtype = c('IDHmut-codel'))
-noncodel.sur.pvalue <- CalSurvPvalue(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), subtype = c('IDHmut-non-codel'))
-wt.sur.pvalue <- CalSurvPvalue(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), subtype = c('IDHwt'))
+codel.sur.pvalue <- CalSurvPvalue(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3'), subtype = c('Oligodendroglioma,IDHmut-codel'))
+noncodel.sur.pvalue <- CalSurvPvalue(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), subtype = c('Astrocytoma,IDHmut'))
+wt.sur.pvalue <- CalSurvPvalue(wgistic.peak.het, tcga.cli.data, grade = c('G4'), subtype = c('Glioblastoma,IDHwt'))
 
 # write.table(codel.sur.pvalue, file='codel.sur.pvalue.txt', sep='\t', quote=FALSE, row.names=TRUE, col.names=TRUE)
 # write.table(noncodel.sur.pvalue, file='noncodel.sur.pvalue.txt', sep='\t', quote=FALSE, row.names=TRUE, col.names=TRUE)
@@ -114,7 +114,7 @@ library('circlize')
 library('ComplexHeatmap')
 library('RColorBrewer')
 
-anno.data <- data.frame(subtype = rep(x = c('IDHwt', 'IDHmut-non-codel', 'IDHmut-codel'), each = 27), 
+anno.data <- data.frame(subtype = rep(x = c('Glioblastoma,IDHwt', 'Astrocytoma,IDHmut', 'Oligodendroglioma,IDHmut-codel'), each = 27), 
 	surtype = rep.int(rep(x = c('OS', 'DSS', 'PFI'), each = 9), times = 3), 
 	comtype = rep.int(rep(x = c('Clonal vs Wt', 'Subclonal vs Wt', 'Clonal vs Subclonal'), each = 3), times = 9), 
 	pvaluetype = rep.int(x = c('lr.p', 'univ.p', 'mult.p'), times = 27))
@@ -122,7 +122,7 @@ anno.data <- data.frame(subtype = rep(x = c('IDHwt', 'IDHmut-non-codel', 'IDHmut
 
 col_fun = colorRamp2(c(0, 30), c("white", "red"))
 mol.col <- c("#00AFBB", "#E7B800", "#FC4E07")
-names(mol.col) <- c("IDHwt", "IDHmut-non-codel", "IDHmut-codel")
+names(mol.col) <- c('Glioblastoma,IDHwt', 'Astrocytoma,IDHmut', 'Oligodendroglioma,IDHmut-codel')
 
 sur.col <- brewer.pal(8, 'Set1')[c(2, 3, 4)] 
 names(sur.col) <- c('OS', 'DSS', 'PFI')
@@ -137,7 +137,7 @@ names(pva.col) <- c('lr.p', 'univ.p', 'mult.p')
 ha = HeatmapAnnotation(df = anno.data, col = list(subtype = mol.col, surtype = sur.col, comtype = com.col, pvaluetype = pva.col), 
 show_legend = FALSE, show_annotation_name = FALSE)
 
-pdf('/result/Section5/pvalue_heatmap.pdf', width=14)
+pdf('result/Section5/pvalue_heatmap.pdf', width=14)
 	Heatmap(matrix = -log2(all.sur.pvalue), cluster_columns = FALSE, cluster_rows = FALSE, column_split = rep(1:3, each = 27), 
 	show_column_names = FALSE, row_names_side = 'left', row_names_gp = gpar(fontsize = 7), name = "p value", col = col_fun,
 	cell_fun = function(j, i, x, y, width, height, fill) {

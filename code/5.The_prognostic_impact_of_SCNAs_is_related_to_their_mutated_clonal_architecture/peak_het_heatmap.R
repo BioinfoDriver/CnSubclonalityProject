@@ -4,9 +4,9 @@ PeakHetPlot <- function(het.mat, mole.subtype, subtype.peaks, outfile){
 	peaks <- rownames(het.mat)
 	
 	het.mat <- as.data.frame(t(het.mat))
-	het.mat <- cbind(het.mat, mole.subtype[rownames(het.mat), 'IDH_CODEL_SUBTYPE', FALSE])
-	het.mat <- data.table::melt(het.mat, id = 'IDH_CODEL_SUBTYPE', na.rm = TRUE)
-	het.mat$label <- paste(het.mat$IDH_CODEL_SUBTYPE, het.mat$variable, sep = '_')
+	het.mat <- cbind(het.mat, mole.subtype[rownames(het.mat), 'Integrated_Diagnoses', FALSE])
+	het.mat <- data.table::melt(het.mat, id = 'Integrated_Diagnoses', na.rm = TRUE)
+	het.mat$label <- paste(het.mat$Integrated_Diagnoses, het.mat$variable, sep = '_')
 
 
 	het.mat <- split(het.mat, het.mat$label)
@@ -23,14 +23,14 @@ PeakHetPlot <- function(het.mat, mole.subtype, subtype.peaks, outfile){
 	het.mat <- do.call(rbind, het.mat)
 
 
-	het.mat <- lapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), function(subgroup){
+	het.mat <- lapply(c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), function(subgroup){
 		return(subset(het.mat, subtype==subgroup & variable %in% subtype.peaks[[subgroup]]))
 	
 	})
 	het.mat <- do.call(rbind, het.mat)
 	
 	
-	for(subgroup in c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt')){
+	for(subgroup in c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt')){
 		if(length(peaks) > length(subtype.peaks[[subgroup]])){
 					
 			mis.label <- setdiff(peaks, subtype.peaks[[subgroup]])
@@ -46,31 +46,31 @@ PeakHetPlot <- function(het.mat, mole.subtype, subtype.peaks, outfile){
 
 	pdf(file=outfile, width=7, height=7)
 	
-	p1 <- ggbarplot(subset(het.mat, subtype=='IDHmut-codel'), "variable", "alt_freq", fill = "value", color = "value", 
+	p1 <- ggbarplot(subset(het.mat, subtype=='Oligodendroglioma,IDHmut-codel'), "variable", "alt_freq", fill = "value", color = "value", 
 	 ylab = FALSE, xlab = FALSE, label = TRUE, lab.col = "white", lab.pos = "in", lab.size = 1, lab.vjust=2, palette = col.pal, 
 	 legend = 'none', x.text.angle=30) + theme(axis.text.y = element_text(size=7), axis.text.x = element_text(size=3))
  
-	p2 <- ggbarplot(subset(het.mat, subtype=='IDHmut-non-codel'), "variable", "alt_freq", fill = "value", color = "value", 
+	p2 <- ggbarplot(subset(het.mat, subtype=='Astrocytoma,IDHmut'), "variable", "alt_freq", fill = "value", color = "value", 
 	 ylab = FALSE, xlab = FALSE, label = TRUE, lab.col = "white", lab.pos = "in", lab.size = 1, lab.vjust=2, palette = col.pal, 
 	 legend = 'none', x.text.angle=30) + theme(axis.text.y = element_text(size=7), axis.text.x = element_text(size=3))
  
-	p3 <- ggbarplot(subset(het.mat, subtype=='IDHwt'), "variable", "alt_freq", fill = "value", color = "value", 
+	p3 <- ggbarplot(subset(het.mat, subtype=='Glioblastoma,IDHwt'), "variable", "alt_freq", fill = "value", color = "value", 
 	 ylab = FALSE, xlab = FALSE, label = TRUE, lab.col = "white", lab.pos = "in", lab.size = 1, lab.vjust=2, palette = col.pal, 
 	 legend = 'none', x.text.angle=30) + theme(axis.text.y = element_text(size=7), axis.text.x = element_text(size=3))
  
 	print(ggarrange(p1, p2, p3, heights=c(0.1, 0.1, 0.1, 0.7), ncol=1, nrow=4))
  
 
-	p4 <- ggbarplot(subset(het.mat, subtype=='IDHmut-codel'), "variable", "n", fill = "value", color = "value", ylab = FALSE, 
+	p4 <- ggbarplot(subset(het.mat, subtype=='Oligodendroglioma,IDHmut-codel'), "variable", "n", fill = "value", color = "value", ylab = FALSE, 
 	 xlab = FALSE, label = TRUE, lab.col = "white", lab.pos = "in", lab.size = 1, lab.vjust=2, palette = col.pal, 
 	 legend = 'none', x.text.angle=30) + theme(axis.text.y = element_text(size=7), axis.text.x = element_text(size=3))
 
-	p5 <- ggbarplot(subset(het.mat, subtype=='IDHmut-non-codel'), "variable", "n", fill = "value", color = "value", ylab = FALSE, 
+	p5 <- ggbarplot(subset(het.mat, subtype=='Astrocytoma,IDHmut'), "variable", "n", fill = "value", color = "value", ylab = FALSE, 
 	 xlab = FALSE, label = TRUE, lab.col = "white", lab.pos = "in", lab.size = 1, lab.vjust=2, palette = col.pal, 
 	 legend = 'none', x.text.angle=30) + theme(axis.text.y = element_text(size=7), axis.text.x = element_text(size=3)) + 
 	 scale_y_continuous(limits=c(0, 100))
 
-	p6 <- ggbarplot(subset(het.mat, subtype=='IDHwt'), "variable", "n", fill = "value", color = "value", ylab = FALSE, 
+	p6 <- ggbarplot(subset(het.mat, subtype=='Glioblastoma,IDHwt'), "variable", "n", fill = "value", color = "value", ylab = FALSE, 
 	 xlab = FALSE, label = TRUE, lab.col = "white", lab.pos = "in", lab.size = 1, lab.vjust=2, palette = col.pal, 
 	 legend = 'none', x.text.angle=30) + theme(axis.text.y = element_text(size=7), axis.text.x = element_text(size=3))
 
@@ -91,5 +91,5 @@ gli.cli.mol.data <- gli.cli.mol.data[gold.set, ]
 rownames(gli.cli.mol.data) <- paste(rownames(gli.cli.mol.data), '01', sep = '-')
 wgistic.het <- wgistic.het[, paste(gold.set, '01', sep = '-')]
 
-
-PeakHetPlot(het.mat=wgistic.het, mole.subtype=gli.cli.mol.data, subtype.peaks, '/result/Section5/wpeak_het_heatmap.pdf')
+setwd('/result/Section5')
+PeakHetPlot(het.mat=wgistic.het, mole.subtype=gli.cli.mol.data, subtype.peaks, 'wpeak_het_heatmap.pdf')

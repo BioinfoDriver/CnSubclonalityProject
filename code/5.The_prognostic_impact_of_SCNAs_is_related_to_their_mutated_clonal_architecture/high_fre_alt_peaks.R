@@ -9,9 +9,9 @@ gli.cli.mol.data <- gli.cli.mol.data[gold.set, ]
 rownames(gli.cli.mol.data) <- paste(rownames(gli.cli.mol.data), '01', sep = '-')
 
 # samples in each subtype
-subtype.samples <- lapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), function(subtype){
+subtype.samples <- lapply(c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), function(subtype){
  
- return(rownames(subset(gli.cli.mol.data, IDH_CODEL_SUBTYPE==subtype)))
+ return(rownames(subset(gli.cli.mol.data, Integrated_Diagnoses==subtype)))
  
 })
 
@@ -24,6 +24,6 @@ subtype.peaks <- lapply(subtype.samples, function(samples){
  return(names(alt.n)[abs(alt.n) >= alt.cut])
 })
 
-names(subtype.peaks) <- c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt')
+names(subtype.peaks) <- c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt')
 
 saveRDS(subtype.peaks, file='/data/high_fre_alt_peaks.rds')

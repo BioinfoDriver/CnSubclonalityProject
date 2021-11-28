@@ -11,14 +11,14 @@ rownames(gli.cli.mol.data) <- paste(rownames(gli.cli.mol.data), '01', sep = '-')
 wgistic.het <- wgistic.het[, paste(gold.set, '01', sep = '-')]
 
 # samples in each subtype
-subtype.samples <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), function(subtype){
+subtype.samples <- sapply(c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), function(subtype){
  
- return(rownames(subset(gli.cli.mol.data, IDH_CODEL_SUBTYPE==subtype)))
+ return(rownames(subset(gli.cli.mol.data, Integrated_Diagnoses==subtype)))
  
 }, USE.NAMES=TRUE)
 
 # percentage of clonal alteration
-peak.clo.alt.pro <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), function(subtype){
+peak.clo.alt.pro <- sapply(c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), function(subtype){
 	
 	het.mat <- wgistic.het[subtype.peaks[[subtype]], subtype.samples[[subtype]]]
 	
@@ -28,7 +28,7 @@ peak.clo.alt.pro <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), funct
 }, USE.NAMES=TRUE)
 
 # Permutation
-ran.peak.clo.alt.pro <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), function(subtype){
+ran.peak.clo.alt.pro <- sapply(c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), function(subtype){
 	
 	het.mat <- wgistic.het[subtype.peaks[[subtype]], subtype.samples[[subtype]]]
 		
@@ -48,7 +48,7 @@ ran.peak.clo.alt.pro <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), f
 }, USE.NAMES=TRUE)
 
 
-p.values.list <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), function(subtype){
+p.values.list <- sapply(c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), function(subtype){
 	peak.clo.pro <- peak.clo.alt.pro[[subtype]]
 	
 	p.values <- sapply(names(peak.clo.pro), function(peak){
@@ -63,7 +63,7 @@ p.values.list <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), function
 
 
 # The probability of clonal alteration 
-clo.alt.pvalue <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), function(subtype){
+clo.alt.pvalue <- sapply(c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), function(subtype){
 	
 	het.mat <- wgistic.het[subtype.peaks[[subtype]], subtype.samples[[subtype]]]
 	p.values <- sapply(rownames(het.mat), function(i){
@@ -82,4 +82,22 @@ clo.alt.pvalue <- sapply(c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), functio
 
 clo.alt.pvalue.adjust <- sapply(clo.alt.pvalue, function(x) p.adjust(p=x, method = 'fdr'))
 
+
+# across subtypes
+p.values <- lapply(rownames(wgistic.het), function(i){
+		
+	clo.n <- sum(abs(wgistic.het[i, ])==1)
+	alt.n <- sum(abs(wgistic.het[i, ])!=0)
+	
+	clo.perc <- clo.n/alt.n
+	p.value <- binom.test(x=clo.n, n=alt.n, p = 0.5, alternative = "two.sided", conf.level = 0.95)$p.value
+	   
+	return(c(clo.perc, p.value))
+})
+
+p.values <- do.call(rbind, p.values)
+colnames(p.values) <- c('clo.alt.perc', 'p.value')
+rownames(p.values) <- rownames(wgistic.het)
+p.values <- as.data.frame(p.values)
+p.values$fdr <- p.adjust(p=p.values$p.value, method = 'fdr')
 

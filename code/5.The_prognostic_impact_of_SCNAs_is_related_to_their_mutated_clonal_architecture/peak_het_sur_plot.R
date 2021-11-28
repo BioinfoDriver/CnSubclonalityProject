@@ -167,7 +167,7 @@ plot.surv <- function(clinical.data, upper.time = NULL, xscale = 1, xlab = "Time
 
 ClonalitySurvPlot <- function(clonality.data, surv.data, surv.type, grade, subtype){
 	
-	surv.data <- subset(surv.data, histological_grade %in% grade & IDH_CODEL_SUBTYPE %in% subtype)
+	surv.data <- subset(surv.data, histological_grade %in% grade & Integrated_Diagnoses %in% subtype)
 	
 	surv.plot.list <- lapply(seq(ncol(clonality.data)), function(i){
 		cli.data <- merge(surv.data, clonality.data[, i, FALSE], by = 'row.names')
@@ -232,13 +232,12 @@ rownames(tcga.cli.data) <- paste0(rownames(tcga.cli.data), '-01', sep='')
 wgistic.peak.het <- as.data.frame(t(wgistic.peak.het[, paste0(gold.set, '-01', sep='')]))
 
 
-DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), 
- subtype = c('IDHmut-codel'), file.name = '/data/Section5/IDHmut_codel_sur_plot.pdf')
+setwd('/result/Section5')
+DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3'), 
+ subtype = c('Oligodendroglioma,IDHmut-codel'), file.name = 'IDHmut_codel_sur_plot.pdf')
 
 DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), 
- subtype = c('IDHmut-non-codel'), file.name = '/data/Section5/IDHmut_non_codel_sur_plot.pdf')
+ subtype = c('Astrocytoma,IDHmut'), file.name = 'IDHmut_non_codel_sur_plot.pdf')
 
-DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), 
- subtype = c('IDHwt'), file.name = '/data/Section5/IDHwt_sur_plot.pdf')
-
-
+DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G4'), 
+ subtype = c('Glioblastoma,IDHwt'), file.name = 'IDHwt_sur_plot.pdf')

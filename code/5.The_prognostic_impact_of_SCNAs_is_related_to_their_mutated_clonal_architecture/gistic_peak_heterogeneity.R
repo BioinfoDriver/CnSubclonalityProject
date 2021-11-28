@@ -44,11 +44,8 @@ gistic.peak <- readRDS(file='/data/OriginalData/gbmlgg_gistic_peak.rds')
 
 ra <- GetMatchedAbsoluteCalls(abs.seg.call)
 wround.gistic.subcl <- QueryGisticSubAlt(ra, query=rowRanges(gistic.peak), sum.label='score', sum.method="wmean")
-mround.gistic.subcl <- QueryGisticSubAlt(ra, query=rowRanges(gistic.peak), sum.label='score', sum.method="any")
 
 wround.gistic.alt <- QueryGisticSubAlt(ra, query=rowRanges(gistic.peak), sum.label='Modal_Total_CN', sum.method="wmean")
-mround.gistic.alt <- QueryGisticSubAlt(ra, query=rowRanges(gistic.peak), sum.label='Modal_Total_CN', sum.method="any")
-
 
 
 QualitativeGisticAlt <- function(alt, ploi){
@@ -79,14 +76,9 @@ QualitativeGisticAlt <- function(alt, ploi){
 
 
 abs.puri.ploi <- readRDS(file='/data/tcga_gli_puri_ploi.rds')
-
 wround.gistic.alt <- QualitativeGisticAlt(wround.gistic.alt, abs.puri.ploi)
-mround.gistic.alt <- QualitativeGisticAlt(mround.gistic.alt, abs.puri.ploi)
 
-
-
-rownames(wround.gistic.alt) <- rownames(mround.gistic.alt) <- 
- paste0(substr(mcols(gistic.peak)$type, 1, 3), '_', mcols(gistic.peak)$band)
+rownames(wround.gistic.alt) <- paste0(substr(mcols(gistic.peak)$type, 1, 3), '_', mcols(gistic.peak)$band)
 
 
 # retain dominant type
@@ -112,8 +104,6 @@ RetainDomType <- function(alt.mat){
 }
 
 wround.gistic.alt <- RetainDomType(wround.gistic.alt)
-# mround.gistic.alt <- RetainDomType(mround.gistic.alt)
-
 
 
 GisticHetPeak <- function(gistic.subcl, gistic.alt)
@@ -143,14 +133,9 @@ GisticHetPeak <- function(gistic.subcl, gistic.alt)
 }
 
 wgistic.het <- GisticHetPeak(wround.gistic.subcl, wround.gistic.alt)
-# mgistic.het <- GisticHetPeak(mround.gistic.subcl, mround.gistic.alt)
-
 
 saveRDS(wgistic.het, file='/data/wgistic_het.rds')
-# saveRDS(mgistic.het, file='/data/mgistic_het.rds')
-
 saveRDS(wround.gistic.alt, file='/data/wgistic_alt.rds')
-# saveRDS(mround.gistic.alt, file='/data/mgistic_alt.rds')
 
 
 
