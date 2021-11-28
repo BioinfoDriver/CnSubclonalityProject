@@ -45,6 +45,7 @@ CliSamCountStat <- function(cli.features, cli.data){
 
 # Silver set
 gli.cn.alt.frac <- readRDS(file='/data/tcga_gli_cn_alt_frac.rds')
+
 silver.set <- rownames(gli.cn.alt.frac) 
 pan.glio.cli.mol.data <- readRDS(file='/data/tcga_glioma_cli_mol.rds')
 silver.set.cli.data <- pan.glio.cli.mol.data[substr(silver.set, 1, 12), ]
@@ -55,25 +56,28 @@ silver.set.cli.data <- silver.set.cli.data %>%
   mutate(kps_group = as.character(cut_width(karnofsky_performance_score, width = 10, boundary = 10)),
 		 kps_group = ifelse(kps_group %in% c('[20,30]', '(30,40]', '(40,50]', '(50,60]', '(60,70]'), "<=70", kps_group))
 
-cli.features <- c("age", "gender", "race", "histological_grade", "histological_type", "molecular_histological_type", 
- "tumor_sample_procurement_method", "kps_group", "laterality", "family_history_of_cancer", 
- "tumor_location", "first_presenting_symptom",
- 'IDH_STATUS', 'TERT_PROMOTER_STATUS', 'TERT_EXPRESSION_STATUS', 'ATRX_STATUS', 'TELOMERE_MAINTENANCE',
- 'MGMT_PROMOTER_STATUS', 'CHR_7_GAIN_CHR_10_LOSS', 'CHR_19_20_CO_GAIN', 'IDH_1P19Q_SUBTYPE',  
- 'IDH_CODEL_SUBTYPE', 'TRANSCRIPTOME_SUBTYPE', 'SUPERVISED_DNA_METHYLATION_CLUSTER')
+cli.features <- c("age", "gender", "race", "histological_grade", "tumor_sample_procurement_method", 
+ "kps_group", "laterality", "family_history_of_cancer", "tumor_location", "first_presenting_symptom", 
+ 'TERT_PROMOTER_STATUS', 'CHR_7_GAIN_CHR_10_LOSS',  'CDKN2AB', 'EGFR', 'IDH_STATUS', 
+ 'IDH_1P19Q_SUBTYPE', 'IDH_CODEL_SUBTYPE', 'MOLECULAR_SUBTYPE', "mol_his_type",
+ 'ATRX_STATUS', 'TERT_EXPRESSION_STATUS','TELOMERE_MAINTENANCE', 'CHR_19_20_CO_GAIN', 
+ 'MGMT_PROMOTER_STATUS', 'TRANSCRIPTOME_SUBTYPE', 'SUPERVISED_DNA_METHYLATION_CLUSTER')
 
 
-silver.statistic <- CliSamCountStat(cli.features, silver.set.cli.data)
+# silver.statistic <- CliSamCountStat(cli.features, silver.set.cli.data)
 
+silver.set.cli.data$EGFR <- ifelse(silver.set.cli.data$EGFR == 1, 'YES', 'NO')
+silver.set.cli.data$CDKN2AB <- ifelse(silver.set.cli.data$CDKN2AB == 1, 'YES', 'NO')
 
-gold.set.cli.data <- subset(silver.set.cli.data, !is.na(IDH_CODEL_SUBTYPE))
+gold.set.cli.data <- subset(silver.set.cli.data, Integrated_Diagnoses %in% 
+ c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'))
 gold.statistic <- CliSamCountStat(cli.features, gold.set.cli.data)
 
 
 # Statistical analysis of clinical molecular characteristics on each subgroups
-subtype.name <- unique(gold.set.cli.data$IDH_CODEL_SUBTYPE)
+subtype.name <- unique(gold.set.cli.data$Integrated_Diagnoses)
 subtype.statistic <- lapply(subtype.name, function(per.type){
-	per.subtype.characters <- subset(gold.set.cli.data, IDH_CODEL_SUBTYPE == per.type)
+	per.subtype.characters <- subset(gold.set.cli.data, Integrated_Diagnoses == per.type)
 	per.subtype.statistic <- CliSamCountStat(cli.features, per.subtype.characters)
 	per.subtype.statistic
 })

@@ -4,7 +4,7 @@
 #
 # @returns: a tibble
 
-# Excluding 1p and 19q
+# Excluding chromosome 7 and chromosome 10 
 CNAltFraction <- function(infile, ploi)
 {	
 	library('dplyr')
@@ -27,8 +27,7 @@ CNAltFraction <- function(infile, ploi)
 	abs.seg.call$subclo_seg <- IsSubClonal(abs.seg.call)
 
 	
-	abs.seg.call <- subset(abs.seg.call, !(Chromosome == 1 & End < 123035434))
-	abs.seg.call <- subset(abs.seg.call, !(Chromosome == 19 & Start > 27681782))
+	abs.seg.call <- subset(abs.seg.call, !(Chromosome == 7 | Chromosome == 10))
 	
 	sub.genome.stat <- abs.seg.call %>% dplyr::select(Sample, Length, neutral_seg, amp_seg, del_seg, subclo_seg) %>% 
 	 group_by(Sample) %>% mutate(
@@ -65,7 +64,7 @@ in.file <- '/data/OriginalData/tcga_glioma_abs_seg.txt'
 gli.cn.alt.frac <- CNAltFraction(infile=in.file, ploi=gli.puri.ploi)
 
 
-# 5 samples without SCNAs, and 3 samples with extreme SCNAs (>90%) thus were excluded
+# 3 samples without SCNAs, and 3 samples with extreme SCNAs (>90%) thus were excluded
 gli.cn.alt.frac <- subset(gli.cn.alt.frac, !(non_neutral_genome_frac > 0.9 | non_neutral_genome_frac == 0))
 
 
@@ -77,22 +76,22 @@ gold.set <- intersect(rownames(gli.cn.alt.frac), paste0(gold.set, '-01'))
 gli.cn.alt.frac <- cbind(gli.cn.alt.frac[gold.set, ], pan.glio.cli.mol.data[substr(gold.set, 1, 12), ])
 
 
+
 ########################################## with or without 1p/19q
 cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
 gli.cn.alt.frac$all_clo_genome_frac <- cn.alt.frac[rownames(gli.cn.alt.frac), 'clo_genome_frac']
 gli.cn.alt.frac$all_clo_cn_alt_frac <- cn.alt.frac[rownames(gli.cn.alt.frac), 'clo_cn_alt_frac']
 
 
-codel.cn.alt.frac <- subset(gli.cn.alt.frac, Integrated_Diagnoses == 'Oligodendroglioma,IDHmut-codel')
+codel.cn.alt.frac <- subset(gli.cn.alt.frac, Integrated_Diagnoses == 'Glioblastoma,IDHwt')
 wilcox.test(codel.cn.alt.frac$all_clo_genome_frac, codel.cn.alt.frac$clo_genome_frac, paired=TRUE)$p.value
-# 3.759611e-26
+# 5.151425e-54
 wilcox.test(codel.cn.alt.frac$all_clo_cn_alt_frac, codel.cn.alt.frac$clo_cn_alt_frac, paired=TRUE)$p.value
-# 1.915642e-11
-
+# 3.023056e-18
 
 
 ##################################################plot
-setwd('/result/Section1/')
+setwd('/result/Section1')
 library('ggpubr')
 clo.frac.plot <- ggpaired(codel.cn.alt.frac, cond1="all_clo_genome_frac", cond2="clo_genome_frac", 
  color="condition", line.color="gray", palette="npg", xlab=FALSE, ylab="Clonal SCNAs Burden") + theme(aspect.ratio=1)
@@ -100,5 +99,6 @@ clo.frac.plot <- ggpaired(codel.cn.alt.frac, cond1="all_clo_genome_frac", cond2=
 clo.perc.plot <- ggpaired(codel.cn.alt.frac, cond1="all_clo_cn_alt_frac", cond2="clo_cn_alt_frac", 
  color="condition", line.color="gray", palette="npg", xlab=FALSE, ylab="Clonal SCNAs Percentage") + theme(aspect.ratio=1)
 
-ggsave(ggarrange(clo.frac.plot, clo.perc.plot, ncol=2, nrow=2), filename='codel_clo_genome_com.pdf')
+ggsave(ggarrange(clo.frac.plot, clo.perc.plot, ncol=2, nrow=2), filename='chr7_10_clo_genome_com.pdf')
+
 

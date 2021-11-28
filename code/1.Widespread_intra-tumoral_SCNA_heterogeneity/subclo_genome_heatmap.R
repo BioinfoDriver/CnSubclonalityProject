@@ -2,7 +2,11 @@
 
 # load
 gli.cn.alt.frac <- readRDS(file='/data/gli_glod_cn_alt_frac.rds')
-gli.cn.alt.frac <- dplyr::arrange(gli.cn.alt.frac, IDH_CODEL_SUBTYPE, desc(subclo_cn_alt_frac))
+
+gli.cn.alt.frac$Integrated_Diagnoses <- factor(gli.cn.alt.frac$Integrated_Diagnoses, 
+ levels=c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'))
+
+gli.cn.alt.frac <- dplyr::arrange(gli.cn.alt.frac, Integrated_Diagnoses, desc(subclo_cn_alt_frac))
 
 # Genome alteration fraction
 genome.alt.frac <- data.frame(sample=rep(x=gli.cn.alt.frac$bcr_patient_barcode, times=4),
@@ -51,27 +55,31 @@ ggsave(alt.plot, file='/result/Section1/cn_alt_frac.pdf')
 library('circlize')
 library('RColorBrewer')
 library('ComplexHeatmap')
-anno.dat <- gli.cn.alt.frac[, c('IDH_CODEL_SUBTYPE', 'cancer_type', 'molecular_histological_type', 'TRANSCRIPTOME_SUBTYPE', 
- 'histological_grade', 'gender', 'age', 'MGMT_PROMOTER_STATUS', 'TERT_PROMOTER_STATUS', 'ATRX_STATUS')]
+anno.dat <- gli.cn.alt.frac[, c('Integrated_Diagnoses', 'age', 'histological_grade', 'CDKN2AB', 
+ 'EGFR', 'CHR_7_GAIN_CHR_10_LOSS', 'TERT_PROMOTER_STATUS', 'ATRX_STATUS', 'MGMT_PROMOTER_STATUS')]
+
+anno.dat$CDKN2AB <- ifelse(anno.dat$CDKN2AB == 1, 'Deletion', 'Diploid')
+anno.dat$EGFR <- ifelse(anno.dat$EGFR == 1, 'Amplification', 'Diploid')
+anno.dat$CHR_7_GAIN_CHR_10_LOSS <- ifelse(anno.dat$CHR_7_GAIN_CHR_10_LOSS == 'Gain chr 7 & loss chr 10', 
+ 'Chr +7/-10', 'No combined CNA')
+
 
 pdf('/result/Section1/subclo_genome_heatmap.pdf')
  heat.anno <- HeatmapAnnotation(df=anno.dat, 
- col=list(cancer_type=setNames(brewer.pal(8, 'Greys')[c(4, 6)], c('LGG', 'GBM')),
- IDH_CODEL_SUBTYPE=setNames(c("#00AFBB", "#E7B800", "#FC4E07"), c("IDHwt", "IDHmut-non-codel", "IDHmut-codel")), 
- molecular_histological_type=setNames(brewer.pal(8, 'Set1')[2:4], c("Glioblastoma", "Astrocytoma", "Oligodendroglioma")), 
- TRANSCRIPTOME_SUBTYPE=setNames(brewer.pal(8, 'Dark2')[1:4], c("ME", "CL", "NE", "PN")), 
- histological_grade=setNames(brewer.pal(8, 'BuPu')[c(3, 4, 5)], c('G2', 'G3', 'G4')), 
- gender=setNames(brewer.pal(12, 'Paired')[c(3, 12)], c('MALE', 'FEMALE')), 
+ col=list(Integrated_Diagnoses=setNames(c("#00AFBB", "#E7B800", "#FC4E07"), 
+   c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt')), 
  age=colorRamp2(c(0, 80), c("white", "red")), 
- MGMT_PROMOTER_STATUS=setNames(brewer.pal(10, 'Set3')[c(1, 10)], c("Methylated", "Unmethylated")), 
- TERT_PROMOTER_STATUS=setNames(brewer.pal(8, 'Set3')[4:5], c("Mutant", "WT")), 
- ATRX_STATUS=setNames(brewer.pal(8, 'Set3')[6:7], c("Mutant", "WT"))))		   	   
+ histological_grade=setNames(brewer.pal(8, 'BuPu')[c(3, 4, 5)], c('G2', 'G3', 'G4')),  
+ CDKN2AB=setNames(brewer.pal(8, 'Set1')[2:3], c("Deletion", "Diploid")), 
+ EGFR=setNames(brewer.pal(8, 'Dark2')[1:2], c("Amplification", "Diploid")), 
+ CHR_7_GAIN_CHR_10_LOSS=setNames(brewer.pal(12, 'Paired')[c(3, 12)], c("Chr +7/-10", "No combined CNA")), 
+ TERT_PROMOTER_STATUS=setNames(brewer.pal(8, 'Set3')[4:5], c("Mutant", "WT")),  
+ ATRX_STATUS=setNames(brewer.pal(8, 'Set3')[6:7], c("Mutant", "WT")),
+ MGMT_PROMOTER_STATUS=setNames(brewer.pal(10, 'Set3')[c(1, 10)], c("Methylated", "Unmethylated"))))		   	   
  
  zero_row_mat <- matrix(nrow = 0, ncol = nrow(anno.dat))
  Heatmap(zero_row_mat, top_annotation = heat.anno)
 dev.off()
-
-
 
 
 

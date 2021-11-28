@@ -44,16 +44,9 @@ out.path <- '/result/Section1/'
 features <- c('non_neutral_genome_frac', 'subclo_genome_frac', 'clo_genome_frac', 'subclo_cn_alt_frac')
 
 
-FeacturePlotBySubtype(dat=gli.cn.alt.frac, 
- features, subtype='IDH_CODEL_SUBTYPE', labels=c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), 
+FeacturePlotBySubtype(dat=gli.cn.alt.frac, features, 
+ subtype='Integrated_Diagnoses', labels=c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'), 
  cols=c("#FC4E07", "#E7B800", "#00AFBB"), out.path, file.name='mole_subtype_subclo_alt_frac.pdf')
 
-FeacturePlotBySubtype(dat=subset(gli.cn.alt.frac, cancer_type=='LGG'), 
- features, subtype='IDH_CODEL_SUBTYPE', labels=c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), 
- cols=c("#FC4E07", "#E7B800", "#00AFBB"), out.path, file.name='lgg_mole_subtype_subclo_alt_frac.pdf')
-
-FeacturePlotBySubtype(dat=subset(gli.cn.alt.frac, cancer_type=='GBM'), 
- features, subtype='IDH_CODEL_SUBTYPE', labels=c('IDHmut-codel', 'IDHmut-non-codel', 'IDHwt'), 
- cols=c("#FC4E07", "#E7B800", "#00AFBB"), out.path, file.name='gbm_mole_subtype_subclo_alt_frac.pdf')
 
 

@@ -39,43 +39,28 @@ SubtypeComByFeacture <- function(input.dat, features, subtype, labels){
 
 features <- c('non_neutral_genome_frac', 'subclo_genome_frac', 'clo_genome_frac', 'subclo_cn_alt_frac')
 
-SubtypeComByFeacture(gli.cn.alt.frac, features, subtype='IDH_CODEL_SUBTYPE', labels=c('IDHwt', 'IDHmut-non-codel', 'IDHmut-codel'))
-# p-value = 1.71e-44
-# p-value = 1.90e-13
-# p-value = 1.59e-37
-# p-value = 5.93e-18
-             # Z            P   P.adjusted                     comparisons	var1_var2
-# 1   -0.7980388 2.124240e-01 2.124240e-01 IDHmut-codel - IDHmut-non-codel	non_neutral_genome_frac
-# 2  -11.6780000 8.256762e-32 1.238514e-31            IDHmut-codel - IDHwt	non_neutral_genome_frac
-# 3  -11.7472253 3.648792e-32 1.094638e-31        IDHmut-non-codel - IDHwt	non_neutral_genome_frac
-# 4   -6.5044926 3.897802e-11 5.846704e-11 IDHmut-codel - IDHmut-non-codel	subclo_genome_frac
-# 5   -7.1777200 3.544178e-13 1.063253e-12            IDHmut-codel - IDHwt	subclo_genome_frac
-# 6   -0.1155942 4.539871e-01 4.539871e-01        IDHmut-non-codel - IDHwt	subclo_genome_frac
-# 7    3.4543729 2.757871e-04 2.757871e-04 IDHmut-codel - IDHmut-non-codel	clo_genome_frac
-# 8   -7.7857174 3.465937e-15 5.198906e-15            IDHmut-codel - IDHwt	clo_genome_frac
-# 9  -12.5412649 2.219268e-36 6.657804e-36        IDHmut-non-codel - IDHwt	clo_genome_frac
-# 10  -8.8124176 6.123769e-19 1.837131e-18 IDHmut-codel - IDHmut-non-codel	subclo_cn_alt_frac
-# 11  -4.3890839 5.691457e-06 5.691457e-06            IDHmut-codel - IDHwt	subclo_cn_alt_frac
-# 12   5.6411859 8.444147e-09 1.266622e-08        IDHmut-non-codel - IDHwt	subclo_cn_alt_frac
+SubtypeComByFeacture(gli.cn.alt.frac, features, subtype='Integrated_Diagnoses', 
+ labels=c('Oligodendroglioma,IDHmut-codel', 'Astrocytoma,IDHmut', 'Glioblastoma,IDHwt'))
+ 
 
-SubtypeComByFeacture(subset(gli.cn.alt.frac, cancer_type == 'LGG'), features, 
- subtype='IDH_CODEL_SUBTYPE', labels=c('IDHwt', 'IDHmut-non-codel', 'IDHmut-codel'))
-# p-value = 1.35921230184229e-11
-# p-value = 4.86187792225113e-10
-# p-value = 2.32943572856334e-17
-# p-value = 5.40992688272558e-17
+# p-value = 8.76e-46
+# p-value = 1.20e-13
+# p-value = 5.75e-38
+# p-value = 7.20e-18
 
-            # Z            P   P.adjusted                     comparisons var1_var2
-# 1   0.1459325 4.419873e-01 4.419873e-01 IDHmut-codel - IDHmut-non-codel non_neutral_genome_frac
-# 2  -6.4652599 5.056242e-11 7.584362e-11            IDHmut-codel - IDHwt non_neutral_genome_frac
-# 3  -6.7146192 9.427898e-12 2.828369e-11        IDHmut-non-codel - IDHwt non_neutral_genome_frac
-# 4  -6.5428842 3.017177e-11 9.051532e-11 IDHmut-codel - IDHmut-non-codel subclo_genome_frac
-# 5  -2.2715897 1.155565e-02 1.155565e-02            IDHmut-codel - IDHwt subclo_genome_frac
-# 6   2.4526772 7.089876e-03 1.063481e-02        IDHmut-non-codel - IDHwt subclo_genome_frac
-# 7   5.0894911 1.795129e-07 2.692693e-07 IDHmut-codel - IDHmut-non-codel clo_genome_frac
-# 8  -4.5961238 2.152115e-06 2.152115e-06            IDHmut-codel - IDHwt clo_genome_frac
-# 9  -8.4115856 2.022523e-17 6.067570e-17        IDHmut-non-codel - IDHwt clo_genome_frac
-# 10 -8.2654199 6.960195e-17 2.088059e-16 IDHmut-codel - IDHmut-non-codel subclo_cn_alt_frac
-# 11 -0.8301967 2.032138e-01 2.032138e-01            IDHmut-codel - IDHwt subclo_cn_alt_frac
-# 12  5.1828885 1.092378e-07 1.638567e-07        IDHmut-non-codel - IDHwt subclo_cn_alt_frac
+             # Z            P   P.adjusted                                         comparisons               var1_var2
+# 1  -11.9486940 3.297674e-33 9.893021e-33             Astrocytoma,IDHmut - Glioblastoma,IDHwt non_neutral_genome_frac
+# 2    0.8230647 2.052356e-01 2.052356e-01 Astrocytoma,IDHmut - Oligodendroglioma,IDHmut-codel non_neutral_genome_frac
+# 3   11.8976748 6.084536e-33 9.126805e-33 Glioblastoma,IDHwt - Oligodendroglioma,IDHmut-codel non_neutral_genome_frac
+# 4   -0.2056264 4.185414e-01 4.185414e-01             Astrocytoma,IDHmut - Glioblastoma,IDHwt      subclo_genome_frac
+# 5    6.5270060 3.354867e-11 5.032301e-11 Astrocytoma,IDHmut - Oligodendroglioma,IDHmut-codel      subclo_genome_frac
+# 6    7.2390983 2.258388e-13 6.775165e-13 Glioblastoma,IDHwt - Oligodendroglioma,IDHmut-codel      subclo_genome_frac
+# 7  -12.6261552 7.575083e-37 2.272525e-36             Astrocytoma,IDHmut - Glioblastoma,IDHwt         clo_genome_frac
+# 8   -3.4527176 2.774848e-04 2.774848e-04 Astrocytoma,IDHmut - Oligodendroglioma,IDHmut-codel         clo_genome_frac
+# 9    7.9036803 1.353934e-15 2.030902e-15 Glioblastoma,IDHwt - Oligodendroglioma,IDHmut-codel         clo_genome_frac
+# 10   5.4728639 2.214101e-08 3.321151e-08             Astrocytoma,IDHmut - Glioblastoma,IDHwt      subclo_cn_alt_frac
+# 11   8.8122477 6.133061e-19 1.839918e-18 Astrocytoma,IDHmut - Oligodendroglioma,IDHmut-codel      subclo_cn_alt_frac
+# 12   4.4755579 3.810602e-06 3.810602e-06 Glioblastoma,IDHwt - Oligodendroglioma,IDHmut-codel      subclo_cn_alt_frac
+
+
 
