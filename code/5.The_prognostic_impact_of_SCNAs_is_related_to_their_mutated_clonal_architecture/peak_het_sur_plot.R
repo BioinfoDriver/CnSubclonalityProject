@@ -241,3 +241,19 @@ DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'),
 
 DrawSurvPlot(wgistic.peak.het, tcga.cli.data, grade = c('G4'), 
  subtype = c('Glioblastoma,IDHwt'), file.name = 'IDHwt_sur_plot.pdf')
+
+######################## CDKN2A/B
+gene.het <- readRDS(file='/data/gene.het.rds')
+gene.het <- as.data.frame(t(gene.het[c('CDKN2A', 'CDKN2B'), ]))
+
+gene.het$CDKN2A[gene.het$CDKN2A == 1 | gene.het$CDKN2A == 2] <- 0
+gene.het$CDKN2B[gene.het$CDKN2B == 1 | gene.het$CDKN2B == 2] <- 0
+
+
+gene.het$CDKN2A.B <- gene.het$CDKN2A + gene.het$CDKN2B
+gene.het$CDKN2A.B[gene.het$CDKN2A.B == -2] <- -1
+gene.het$CDKN2A.B[gene.het$CDKN2A.B == -4] <- -2
+gene.het <- subset(gene.het, CDKN2A.B != -3)
+
+DrawSurvPlot(gene.het, tcga.cli.data, grade = c('G2', 'G3' ,'G4'), 
+ subtype = c('Glioblastoma,IDHwt'), file.name = 'IDHwt_sur_cdkn2ab_plot.pdf')
