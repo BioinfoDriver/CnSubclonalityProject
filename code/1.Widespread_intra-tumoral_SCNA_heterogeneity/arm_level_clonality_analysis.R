@@ -67,7 +67,7 @@ ClosubcloSegNum <- function(infile, ploi, ana.sams)
 
 
 gli.puri.ploi <- readRDS(file='/data/tcga_gli_puri_ploi.rds')
-in.file <- '/data/tcga_glioma_abs_seg.txt'
+in.file <- '/data/OriginalData/tcga_glioma_abs_seg.txt'
 
 # gold set
 gold.set <- readRDS(file='/data/gold_set.rds')
@@ -173,7 +173,7 @@ ggsave(ggarrange(plot.chr1p19q.all, plot.chr1p19q.ast, plot.chr1p19q.gli, plot.c
 
 
 # region
-chr.region <- read.csv(file='/data/chromosome.band.hg19.txt', 
+chr.region <- read.csv(file='/data/OriginalData/chromosome.band.hg19.txt', 
  header=TRUE, sep='\t', stringsAsFactors=FALSE)
 
 chr.region <- subset(chr.region, !(X.chrom %in% c('chrX', 'chrY')))
